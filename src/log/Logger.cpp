@@ -1,0 +1,123 @@
+/* Genepy - A General-Purpose Library
+ * Copyright (C) 2020  Erwan Grâce <erwan.grace@outlook.fr>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/**
+ * @file Logger.cpp
+ * @author Erwan
+ * @date 28/09/2020
+ */
+
+#include <genepy/log/Logger.h>
+
+#include <QtCore/QDir>
+
+#include <spdlog/logger.h>
+#include <spdlog/sinks/null_sink.h>
+#include <spdlog/sinks/rotating_file_sink.h>
+
+#include "LogLevelFormatter.h"
+
+namespace genepy {
+
+namespace {
+
+const auto kLogDirName = QStringLiteral("log");
+const auto kLogFileNameExt = QStringLiteral("log");
+const auto kMaxLogFileSize = 5 * 1024 * 1024; // 5 MB
+const auto kMaxNLogFiles = 3;
+const auto kLogMessageFormat =
+    QString{"%d/%m/%Y %H:%M:%S.%e %"} + LogLevelFormatter::kLogLevelFlag_ + " [%n] %v";
+
+} // namespace
+
+class Logger::LoggerImpl {
+public:
+    static void initialize(const QString& appName, const QVersionNumber& appVersion)
+    {
+        // Define the path to the log file...
+        const auto logDirPath = QDir::homePath() + "/." + appName.toLower() + '/' +
+                                appVersion.toString() + '/' + kLogDirName;
+        const auto logFilePath = logDirPath + '/' + appName.toLower() + '.' + kLogFileNameExt;
+
+        // ...and configure it
+        sink_ = std::make_shared<spdlog::sinks::rotating_file_sink_st>(
+            logFilePath.toStdString(), kMaxLogFileSize, kMaxNLogFiles);
+
+        auto formatter = std::make_unique<spdlog::pattern_formatter>();
+        formatter->add_flag<LogLevelFormatter>(LogLevelFormatter::kLogLevelFlag_)
+            .set_pattern(kLogMessageFormat.toStdString());
+
+        sink_->set_formatter(std::move(formatter));
+    }
+
+    explicit LoggerImpl(const QString& name)
+        : logger_{new spdlog::logger{name.toStdString(), sink_}}
+    {
+#ifdef QT_DEBUG
+        logger_->set_level(spdlog::level::trace);
+#else
+        logger_->set_level(spdlog::level::info);
+#endif
+    }
+
+    spdlog::logger* getLogger() const { return logger_.get(); }
+
+private:
+    static spdlog::sink_ptr sink_;
+
+    const std::unique_ptr<spdlog::logger> logger_;
+};
+
+spdlog::sink_ptr Logger::LoggerImpl::sink_{new spdlog::sinks::null_sink_st};
+
+void Logger::initialize(const QString& appName, const QVersionNumber& appVersion)
+{
+    LoggerImpl::initialize(appName, appVersion);
+}
+
+Logger::Logger(const QString& name) : impl_{new LoggerImpl{name}} {}
+
+Logger::~Logger() = default;
+
+void Logger::log(LogLevel level, const QString& message, bool flush) const
+{
+    switch (level) {
+        case LogLevel::kTrace:
+            impl_->getLogger()->trace(message.toStdString());
+            break;
+        case LogLevel::kDebug:
+            impl_->getLogger()->debug(message.toStdString());
+            break;
+        case LogLevel::kInfo:
+            impl_->getLogger()->info(message.toStdString());
+            break;
+        case LogLevel::kWarn:
+            impl_->getLogger()->warn(message.toStdString());
+            break;
+        case LogLevel::kError:
+            impl_->getLogger()->error(message.toStdString());
+            break;
+        case LogLevel::kFatal:
+            impl_->getLogger()->critical(message.toStdString());
+    }
+
+    if (flush) {
+        impl_->getLogger()->flush();
+    }
+}
+
+} // namespace genepy
