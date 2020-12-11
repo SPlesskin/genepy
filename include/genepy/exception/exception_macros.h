@@ -28,7 +28,11 @@
 
 #include <genepy/exception/Exception.h>
 
+#ifdef Q_OS_WIN
+#define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
+#else
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+#endif
 
 /**
  * @def GENEPY_THROW_EXCEPTION_IF(condition, cause)

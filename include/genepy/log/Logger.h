@@ -33,6 +33,8 @@
 
 namespace genepy {
 
+class LoggerImpl;
+
 /**
  * @defgroup log Log
  */
@@ -41,33 +43,32 @@ namespace genepy {
  * @brief Provides an object to record events in a file.
  * @ingroup log
  */
-class GENEPY_EXPORT Logger {
+class Logger {
 public:
     /**
      * @brief Initializes this class.
      * @param appName the name of an application
      * @param appVersion the version number of the aforementioned application
      */
-    static void initialize(const QString& appName, const QVersionNumber& appVersion);
+    GENEPY_EXPORT static void initialize(const QString& appName, const QVersionNumber& appVersion);
 
     /**
      * @brief Constructor.
      * @param name name of the logger
      */
-    explicit Logger(const QString& name);
+    GENEPY_EXPORT explicit Logger(const QString& name);
 
     /// Destructor.
-    ~Logger();
+    GENEPY_EXPORT ~Logger();
 
     /**
      * @brief Writes a message to the log file.
      * @param level the severity level associated with the message
      * @param message the message to write
      */
-    void log(LogLevel level, const QString& message, bool flush = false) const;
+    GENEPY_EXPORT void log(LogLevel level, const QString& message, bool flush = false) const;
 
 private:
-    class LoggerImpl;
     std::unique_ptr<LoggerImpl> impl_;
 };
 

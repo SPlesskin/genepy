@@ -44,7 +44,7 @@ const auto kLogMessageFormat =
 
 } // namespace
 
-class Logger::LoggerImpl {
+class LoggerImpl {
 public:
     static void initialize(const QString& appName, const QVersionNumber& appVersion)
     {
@@ -82,7 +82,7 @@ private:
     const std::unique_ptr<spdlog::logger> logger_;
 };
 
-spdlog::sink_ptr Logger::LoggerImpl::sink_{new spdlog::sinks::null_sink_st};
+spdlog::sink_ptr LoggerImpl::sink_{new spdlog::sinks::null_sink_st};
 
 void Logger::initialize(const QString& appName, const QVersionNumber& appVersion)
 {

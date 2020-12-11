@@ -14,34 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.7)
+function(genepy_find_qt_include_dir include_dir)
+    find_package(Qt5 REQUIRED COMPONENTS Core)
+    list(GET Qt5Core_INCLUDE_DIRS 0 include_dir)
 
-if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.15)
-    cmake_policy(SET CMP0092 NEW) # Silence MSVC warning D9025
-endif()
+    # Remove unnecessary path separators (e.g., the trailing one)
+    file(TO_CMAKE_PATH "${include_dir}" include_dir)
 
-project(Genepy VERSION 0.1.0 LANGUAGES CXX)
-
-# Utility CMake functions
-include(cmake/utils.cmake)
-
-# Set a default build type if none was specified
-include(cmake/build_type.cmake)
-
-# Define global parameters
-include(cmake/params.cmake)
-
-# Configure external tools
-include(cmake/external_tools.cmake)
-
-# Set compiler flags
-include(cmake/compiler.cmake)
-
-add_subdirectory(src)
-add_subdirectory(test)
-
-# Install CMake configuration files
-include(cmake/install_config.cmake)
-
-# Configure the package generators
-include(cmake/package.cmake)
+    set(include_dir ${include_dir} PARENT_SCOPE)
+endfunction()

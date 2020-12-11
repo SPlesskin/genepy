@@ -34,9 +34,31 @@ set(CPACK_SOURCE_IGNORE_FILES "\\\\.git" "build" "CMakeLists.txt.user")
 
 # Configure the binary package generator
 # ======================================
-set(CPACK_GENERATOR "DEB")
-set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER ${CPACK_PACKAGE_VENDOR})
-set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+if (UNIX)
+    set(CPACK_GENERATOR "DEB")
+    set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+    set(CPACK_DEBIAN_PACKAGE_MAINTAINER ${CPACK_PACKAGE_VENDOR})
+    set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+else()
+    option(GENEPY_USE_NSIS "Use NSIS generator to produce installer" OFF)
+
+    if (GENEPY_USE_NSIS)
+        set(CPACK_GENERATOR "NSIS")
+
+        # This variable is used within NSIS header file.
+        set(CPACK_NSIS_INSTALLED_ICON_NAME "${GENEPY_PROJECT_NAME_L}.ico")
+
+        set(CPACK_NSIS_HELP_LINK "https://github.com/SPlesskin/genepy")
+        set(CPACK_NSIS_URL_INFO_ABOUT ${CPACK_NSIS_HELP_LINK})
+        set(CPACK_NSIS_CONTACT "erwan.grace@outlook.fr")
+
+        # Generate header file with custom definitions for NSIS
+        set(nsis_definitions_nsh_in "${GENEPY_RESOURCE_DIR}/nsis/NSIS.definitions.nsh.in")
+        set(nsis_definitions_nsh "${CMAKE_BINARY_DIR}/resources/nsis/NSIS.definitions.nsh")
+        configure_file(${nsis_definitions_nsh_in} ${nsis_definitions_nsh} @ONLY)
+    else()
+        set(CPACK_GENERATOR "ZIP")
+    endif()
+endif()
 
 include(CPack)

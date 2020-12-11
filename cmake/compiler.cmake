@@ -23,6 +23,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Set warning flags
+# =================
 add_library(common INTERFACE)
-target_compile_options(common INTERFACE -Werror -pedantic-errors -Wall -Wextra -Wconversion
-                                        -Wsign-conversion)
+
+if(MSVC)
+    genepy_find_qt_include_dir(include_dir)
+    target_compile_options(common INTERFACE /WX /W4
+                                            /experimental:external /external:I ${include_dir} /external:W0
+                                            /wd4275)
+else()
+    target_compile_options(common INTERFACE -Werror -pedantic-errors -Wall -Wextra -Wconversion
+                                            -Wsign-conversion)
+endif()

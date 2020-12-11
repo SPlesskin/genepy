@@ -61,7 +61,12 @@ void TestLogger::initTestCase()
     QVERIFY(!workingDir_.exists(logFilePath_)); // Obvious
 }
 
-void TestLogger::cleanupTestCase() { QVERIFY(workingDir_.removeRecursively()); }
+void TestLogger::cleanupTestCase()
+{
+    if (!workingDir_.removeRecursively()) {
+        qDebug() << "Impossible to delete" << workingDir_.filePath(logFilePath_);
+    }
+}
 
 void TestLogger::testInitialize()
 {
