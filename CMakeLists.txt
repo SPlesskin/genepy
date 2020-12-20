@@ -22,14 +22,14 @@ endif()
 
 project(Genepy VERSION 0.1.0 LANGUAGES CXX)
 
-# Utility CMake functions
-include(cmake/utils.cmake)
-
 # Set a default build type if none was specified
 include(cmake/build_type.cmake)
 
 # Define global parameters
 include(cmake/params.cmake)
+
+# Utility CMake functions
+include(cmake/utils.cmake)
 
 # Configure external tools
 include(cmake/external_tools.cmake)
