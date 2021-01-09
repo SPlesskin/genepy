@@ -15,11 +15,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cmake_minimum_required(VERSION 3.7)
+
 project(example)
 
 add_executable(${PROJECT_NAME} main.cpp)
 
-find_package(Qt5 REQUIRED COMPONENTS Core)
 find_package(Genepy REQUIRED CONFIG)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core genepy::genepy)
+target_link_libraries(${PROJECT_NAME} PRIVATE genepy::genepy)
