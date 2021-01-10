@@ -18,9 +18,9 @@ find_package(Doxygen)
 
 if(DOXYGEN_FOUND)
     # Variables used in the Doxygen configuration file
-    set(DOXYGEN_PROJECT_BRIEF "A C++ general-purpose library")
-    set(DOXYGEN_OUTPUT_DIR "\"${CMAKE_CURRENT_BINARY_DIR}\"")
-    set(DOXYGEN_INPUT_DIRS "\"${CMAKE_CURRENT_SOURCE_DIR}\" \\
+    set(GENEPY_DOXYGEN_PROJECT_BRIEF "A C++ general-purpose library")
+    set(GENEPY_DOXYGEN_OUTPUT_DIR "\"${CMAKE_CURRENT_BINARY_DIR}\"")
+    set(GENEPY_DOXYGEN_INPUT_DIRS "\"${CMAKE_CURRENT_SOURCE_DIR}\" \\
                              \"${CMAKE_SOURCE_DIR}/include\" \\
                              \"${CMAKE_SOURCE_DIR}/src\" \\
                              \"${CMAKE_SOURCE_DIR}/app\"")

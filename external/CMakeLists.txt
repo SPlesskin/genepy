@@ -15,19 +15,20 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cmake_minimum_required(VERSION 3.7)
-project(external)
+
+project(GenepyExternal)
 
 include(ExternalProject)
 
-if(NOT EXTERNAL_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-    set(EXTERNAL_BUILD_TYPE Release CACHE STRING "Choose the type of build.")
+if(NOT GENEPY_EXTERNAL_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    set(GENEPY_EXTERNAL_BUILD_TYPE Release CACHE STRING "Choose the type of build.")
     # Set the possible values of build type for the CMake GUI
-    set_property(CACHE EXTERNAL_BUILD_TYPE PROPERTY STRINGS Debug Release MinSizeRel RelWithDebInfo)
+    set_property(CACHE GENEPY_EXTERNAL_BUILD_TYPE PROPERTY STRINGS Debug Release MinSizeRel RelWithDebInfo)
 endif()
 
-set(EXTERNAL_BUILD_EXAMPLES OFF)
-set(EXTERNAL_BUILD_SHARED OFF)
-set(EXTERNAL_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/external")
-set(EXTERNAL_BUILD_TESTS OFF)
+set(GENEPY_EXTERNAL_BUILD_EXAMPLES OFF)
+set(GENEPY_EXTERNAL_BUILD_SHARED OFF)
+set(GENEPY_EXTERNAL_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/external")
+set(GENEPY_EXTERNAL_BUILD_TESTS OFF)
 
-include(spdlog/spdlog_ep.cmake)
+include(spdlog/GenepyExternalSpdlog.cmake)

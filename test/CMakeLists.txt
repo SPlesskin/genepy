@@ -20,16 +20,16 @@ if(BUILD_TESTING)
 
     find_package(Qt5 REQUIRED COMPONENTS Test)
 
-    foreach(test_file ${GENEPY_TEST_SOURCES})
-        get_filename_component(test_dir ${test_file} DIRECTORY)
-        get_filename_component(test_name ${test_file} NAME_WE)
+    foreach(_file ${GENEPY_TEST_SOURCES})
+        get_filename_component(_dir ${_file} DIRECTORY)
+        get_filename_component(_name ${_file} NAME_WE)
 
         # List the source files of the current test
-        file(GLOB_RECURSE test_sources "${test_dir}/${test_name}.*")
+        file(GLOB_RECURSE _sources "${_dir}/${_name}.*")
 
-        add_executable(${test_name} ${test_sources})
-        target_link_libraries(${test_name} PRIVATE common Qt5::Test ${GENEPY_LIB})
+        add_executable(${_name} ${_sources})
+        target_link_libraries(${_name} PRIVATE common Qt5::Test ${GENEPY_LIBRARY})
 
-        add_test(NAME ${test_name} COMMAND ${test_name})
+        add_test(NAME ${_name} COMMAND ${_name})
     endforeach()
 endif()

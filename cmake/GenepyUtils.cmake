@@ -14,18 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-find_program(CLANG_FORMAT_EXECUTABLE
-             NAMES clang-format
-             DOC "Path to clang-format executable.")
+function(genepy_find_qt_include_dir result)
+    find_package(Qt5 REQUIRED COMPONENTS Core)
+    list(GET Qt5Core_INCLUDE_DIRS 0 result)
 
-if(CLANG_FORMAT_EXECUTABLE)
-    message(STATUS "clang-format found: ${CLANG_FORMAT_EXECUTABLE}")
+    # Remove unnecessary path separators (e.g., the trailing one)
+    file(TO_CMAKE_PATH "${result}" result)
 
-    # Collect the files to format
-    file(GLOB_RECURSE files src/*.cpp src/*.h include/*.h test/*.cpp test/*.h)
-
-    add_custom_target(format ALL
-                      COMMAND ${CLANG_FORMAT_EXECUTABLE} -i -style=file ${files}
-                      COMMENT "Formatting code..."
-                      VERBATIM)
-endif()
+    set(result ${result} PARENT_SCOPE)
+endfunction()

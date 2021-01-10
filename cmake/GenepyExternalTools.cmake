@@ -23,7 +23,7 @@ set(CMAKE_AUTOMOC ON)
 
 # ClangFormat
 # ===========
-include(cmake/code_formatter.cmake)
+include(cmake/GenepyCodeFormatter.cmake)
 
 # Doxygen
 # =======

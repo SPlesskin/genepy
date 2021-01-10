@@ -19,21 +19,20 @@ include(CMakePackageConfigHelpers)
 # Install the export set
 install(EXPORT ${GENEPY_EXPORT_SET}
         NAMESPACE ${GENEPY_PROJECT_NAME_L}::
-        DESTINATION ${GENEPY_INSTALL_CMAKE_DIR})
+        DESTINATION ${GENEPY_CMAKE_INSTALL_DIR})
 
-# Create the Config.cmake and ConfigVersion.cmake files
-# =====================================================
-set(config_cmake_in ${GENEPY_RESOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in)
-set(GENEPY_CMAKE_CONFIG_FILE ${GENEPY_OUTPUT_DIR}/${GENEPY_INSTALL_CMAKE_DIR}/${PROJECT_NAME}Config.cmake)
-configure_package_config_file(${config_cmake_in} ${GENEPY_CMAKE_CONFIG_FILE}
-                              INSTALL_DESTINATION ${GENEPY_INSTALL_CMAKE_DIR})
+# Create CMake configuration files
+# ================================
+set(GENEPY_CMAKE_CONFIG_FILE ${GENEPY_OUTPUT_DIR}/${GENEPY_CMAKE_INSTALL_DIR}/${PROJECT_NAME}Config.cmake)
+configure_package_config_file(${GENEPY_RESOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in ${GENEPY_CMAKE_CONFIG_FILE}
+                              INSTALL_DESTINATION ${GENEPY_CMAKE_INSTALL_DIR})
 
-set(GENEPY_CMAKE_VERSION_FILE ${GENEPY_OUTPUT_DIR}/${GENEPY_INSTALL_CMAKE_DIR}/${PROJECT_NAME}ConfigVersion.cmake)
+set(GENEPY_CMAKE_VERSION_FILE ${GENEPY_OUTPUT_DIR}/${GENEPY_CMAKE_INSTALL_DIR}/${PROJECT_NAME}ConfigVersion.cmake)
 write_basic_package_version_file(${GENEPY_CMAKE_VERSION_FILE}
                                  VERSION ${PROJECT_VERSION}
                                  COMPATIBILITY SameMajorVersion)
 
-# Install the above configuration files
+# Install the above created files
 install(FILES ${GENEPY_CMAKE_CONFIG_FILE}
               ${GENEPY_CMAKE_VERSION_FILE}
-        DESTINATION ${GENEPY_INSTALL_CMAKE_DIR})
+        DESTINATION ${GENEPY_CMAKE_INSTALL_DIR})

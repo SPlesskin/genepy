@@ -53,9 +53,8 @@ else()
         set(CPACK_NSIS_CONTACT "erwan.grace@outlook.fr")
 
         # Generate header file with custom definitions for NSIS
-        set(nsis_definitions_nsh_in "${GENEPY_RESOURCE_DIR}/nsis/NSIS.definitions.nsh.in")
-        set(nsis_definitions_nsh "${CMAKE_BINARY_DIR}/resources/nsis/NSIS.definitions.nsh")
-        configure_file(${nsis_definitions_nsh_in} ${nsis_definitions_nsh} @ONLY)
+        configure_file(${GENEPY_RESOURCE_DIR}/nsis/NSIS.definitions.nsh.in
+                       "${CMAKE_BINARY_DIR}/resources/nsis/NSIS.definitions.nsh" @ONLY)
     else()
         set(CPACK_GENERATOR "ZIP")
     endif()

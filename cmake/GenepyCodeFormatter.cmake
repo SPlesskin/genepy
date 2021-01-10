@@ -14,14 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-set(default_build_type Release)
-if(EXISTS "${PROJECT_SOURCE_DIR}/.git")
-    set(default_build_type Debug)
-endif()
+find_program(GENEPY_CLANG_FORMAT_EXECUTABLE
+             NAMES clang-format
+             DOC "Path to clang-format executable.")
 
-if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-    message(STATUS "Setting build type to '${default_build_type}' as none was specified.")
-    set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE STRING "Choose the type of build." FORCE)
-    # Set the possible values of build type for the CMake GUI
-    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS Debug Release MinSizeRel RelWithDebInfo)
+if(GENEPY_CLANG_FORMAT_EXECUTABLE)
+    message(STATUS "clang-format found: ${GENEPY_CLANG_FORMAT_EXECUTABLE}")
+
+    # Collect the files to format
+    file(GLOB_RECURSE GENEPY_FILES_TO_FORMAT src/*.cpp src/*.h include/*.h test/*.cpp test/*.h)
+
+    add_custom_target(format ALL
+                      COMMAND ${GENEPY_CLANG_FORMAT_EXECUTABLE} -i -style=file ${GENEPY_FILES_TO_FORMAT}
+                      COMMENT "Formatting code..."
+                      VERBATIM)
 endif()

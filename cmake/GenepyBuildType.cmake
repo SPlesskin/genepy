@@ -14,12 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-function(genepy_find_qt_include_dir include_dir)
-    find_package(Qt5 REQUIRED COMPONENTS Core)
-    list(GET Qt5Core_INCLUDE_DIRS 0 include_dir)
+set(GENEPY_DEFAULT_BUILD_TYPE Release)
+if(EXISTS "${PROJECT_SOURCE_DIR}/.git")
+    set(GENEPY_DEFAULT_BUILD_TYPE Debug)
+endif()
 
-    # Remove unnecessary path separators (e.g., the trailing one)
-    file(TO_CMAKE_PATH "${include_dir}" include_dir)
-
-    set(include_dir ${include_dir} PARENT_SCOPE)
-endfunction()
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    message(STATUS "Setting build type to '${GENEPY_DEFAULT_BUILD_TYPE}' as none was specified.")
+    set(CMAKE_BUILD_TYPE ${GENEPY_DEFAULT_BUILD_TYPE} CACHE STRING "Choose the type of build." FORCE)
+    # Set the possible values of build type for the CMake GUI
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS Debug Release MinSizeRel RelWithDebInfo)
+endif()

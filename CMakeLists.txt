@@ -23,25 +23,27 @@ endif()
 project(Genepy VERSION 0.1.0 LANGUAGES CXX)
 
 # Set a default build type if none was specified
-include(cmake/build_type.cmake)
+include(cmake/GenepyBuildType.cmake)
 
 # Define global parameters
-include(cmake/params.cmake)
+include(cmake/GenepyParams.cmake)
 
 # Utility CMake functions
-include(cmake/utils.cmake)
+include(cmake/GenepyUtils.cmake)
 
 # Configure external tools
-include(cmake/external_tools.cmake)
+include(cmake/GenepyExternalTools.cmake)
 
 # Set compiler flags
-include(cmake/compiler.cmake)
+include(cmake/GenepyCompiler.cmake)
+
+include(CTest)
 
 add_subdirectory(src)
 add_subdirectory(test)
 
 # Install CMake configuration files
-include(cmake/install_config.cmake)
+include(cmake/GenepyInstallConfig.cmake)
 
 # Configure the package generators
-include(cmake/package.cmake)
+include(cmake/GenepyPackage.cmake)
