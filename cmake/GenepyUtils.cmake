@@ -16,10 +16,10 @@
 
 function(genepy_find_qt_include_dir result)
     find_package(Qt5 REQUIRED COMPONENTS Core)
-    list(GET Qt5Core_INCLUDE_DIRS 0 result)
+    list(GET Qt5Core_INCLUDE_DIRS 0 ${result})
 
     # Remove unnecessary path separators (e.g., the trailing one)
-    file(TO_CMAKE_PATH "${result}" result)
+    file(TO_CMAKE_PATH "${${result}}" ${result})
 
-    set(result ${result} PARENT_SCOPE)
+    set(${result} ${${result}} PARENT_SCOPE)
 endfunction()
