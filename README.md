@@ -1,3 +1,5 @@
+[![SPlesskin](https://circleci.com/gh/SPlesskin/genepy.svg?style=svg)](https://circleci.com/gh/SPlesskin/genepy)
+
 # Genepy
 
 Genepy is a C++ API which provides reusable components to build console or interactive applications.
