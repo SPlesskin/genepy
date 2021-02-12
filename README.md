@@ -6,9 +6,9 @@ Genepy is a C++ API which provides reusable components to build console or inter
 
 ## Installation
 
-Genepy is a [Qt 5](https://www.qt.io/) library which has been developped and tested on Linux Debian
-Stretch (Debian 9). [CMake](https://cmake.org/) 3.7 or higher and a C++14 compiler are required to
-build this project.
+Genepy is a [Qt 5](https://www.qt.io/) library which has been developed and mainly tested on Linux
+Debian Stretch (Debian 9). [CMake](https://cmake.org/) 3.7 or higher and a C++14 compiler are
+required to build this project.
 
 ```bash
 cd external
