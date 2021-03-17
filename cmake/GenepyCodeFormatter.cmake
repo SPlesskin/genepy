@@ -14,18 +14,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-find_program(GENEPY_CLANG_FORMAT_EXECUTABLE
-             NAMES clang-format
-             DOC "Path to clang-format executable.")
+option(GENEPY_USE_CLANG_FORMAT "Use clang-format to automatically format C++ files" OFF)
 
-if(GENEPY_CLANG_FORMAT_EXECUTABLE)
-    message(STATUS "clang-format found: ${GENEPY_CLANG_FORMAT_EXECUTABLE}")
+if(GENEPY_USE_CLANG_FORMAT)
+    find_program(GENEPY_CLANG_FORMAT_EXECUTABLE
+                 NAMES clang-format
+                 DOC "Path to clang-format executable.")
 
-    # Collect the files to format
-    file(GLOB_RECURSE GENEPY_FILES_TO_FORMAT src/*.cpp src/*.h include/*.h test/*.cpp test/*.h)
+    if(GENEPY_CLANG_FORMAT_EXECUTABLE)
+        message(STATUS "clang-format found: ${GENEPY_CLANG_FORMAT_EXECUTABLE}")
 
-    add_custom_target(format ALL
-                      COMMAND ${GENEPY_CLANG_FORMAT_EXECUTABLE} -i -style=file ${GENEPY_FILES_TO_FORMAT}
-                      COMMENT "Formatting code..."
-                      VERBATIM)
+        # Collect the files to format
+        file(GLOB_RECURSE GENEPY_FILES_TO_FORMAT src/*.cpp src/*.h include/*.h test/*.cpp test/*.h)
+
+        add_custom_target(format ALL
+                          COMMAND ${GENEPY_CLANG_FORMAT_EXECUTABLE} -i -style=file ${GENEPY_FILES_TO_FORMAT}
+                          COMMENT "Formatting code..."
+                          VERBATIM)
+    endif()
 endif()
