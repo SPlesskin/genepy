@@ -13,7 +13,7 @@ required to build this project.
 ```bash
 cd external
 mkdir build && cd build
-cmake -D EXTERNAL_BUILD_TYPE=Release ..
+cmake -D GENEPY_EXTERNAL_BUILD_TYPE=Release ..
 make
 cd ../..
 mkdir build && cd build
