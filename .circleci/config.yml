@@ -33,7 +33,7 @@ commands:
       repository:
         description: "Repository name or key"
         type: string
-        default: genepy-msvc-release
+        default: genepy-windows-release
     steps:
       - run:
           name: Install and configure JFrog CLI
@@ -209,8 +209,7 @@ jobs:
                   cd build
                   mingw32-make package
                   mkdir package; mv *.zip package
-            - upload-package:
-                repository: genepy-mingw-release
+            - upload-package
             - store_artifacts:
                 path: build/package
 

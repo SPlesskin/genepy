@@ -14,6 +14,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+# Set compiler and target architecture (for further purposes)
+# ===========================================================
+if(WIN32)
+    if(MINGW)
+        set(GENEPY_COMPILER MinGW)
+    else()
+        set(GENEPY_COMPILER MSVC)
+    endif()
+endif()
+
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(GENEPY_TARGET_ARCHITECTURE x64)
+else()
+    set(GENEPY_TARGET_ARCHITECTURE x86)
+endif()
+
 # Enable C++14 and prevent CMake from falling back to a previous standard if the compiler doesn't
 # support the specified one
 set(CMAKE_CXX_STANDARD 14)

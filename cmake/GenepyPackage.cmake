@@ -34,15 +34,17 @@ set(CPACK_SOURCE_IGNORE_FILES "\\\\.git" "build" "CMakeLists.txt.user")
 
 # Configure the binary package generator
 # ======================================
-if (UNIX)
+if(UNIX)
     set(CPACK_GENERATOR "DEB")
     set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER ${CPACK_PACKAGE_VENDOR})
     set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 else()
+    string(TOLOWER ${CPACK_PACKAGE_FILE_NAME}-${GENEPY_COMPILER}-${GENEPY_TARGET_ARCHITECTURE} CPACK_PACKAGE_FILE_NAME)
+
     option(GENEPY_USE_NSIS "Use NSIS generator to produce installer" OFF)
 
-    if (GENEPY_USE_NSIS)
+    if(GENEPY_USE_NSIS)
         set(CPACK_GENERATOR "NSIS")
 
         # This variable is used within NSIS header file.
