@@ -14,24 +14,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-find_package(Doxygen)
+option(GENEPY_USE_DOXYGEN "Use Doxygen to produce code documentation" OFF)
 
-if(DOXYGEN_FOUND)
-    # Variables used in the Doxygen configuration file
-    set(GENEPY_DOXYGEN_PROJECT_BRIEF "A C++ general-purpose library")
-    set(GENEPY_DOXYGEN_OUTPUT_DIR "\"${CMAKE_CURRENT_BINARY_DIR}\"")
-    set(GENEPY_DOXYGEN_INPUT_DIRS "\"${CMAKE_CURRENT_SOURCE_DIR}\" \\
+if(GENEPY_USE_DOXYGEN)
+    find_package(Doxygen)
+
+    if(DOXYGEN_FOUND)
+        # Variables used in the Doxygen configuration file
+        set(GENEPY_DOXYGEN_PROJECT_BRIEF "A C++ general-purpose library")
+        set(GENEPY_DOXYGEN_OUTPUT_DIR "\"${CMAKE_CURRENT_BINARY_DIR}\"")
+        set(GENEPY_DOXYGEN_INPUT_DIRS "\"${CMAKE_CURRENT_SOURCE_DIR}\" \\
                              \"${CMAKE_SOURCE_DIR}/include\" \\
                              \"${CMAKE_SOURCE_DIR}/src\" \\
                              \"${CMAKE_SOURCE_DIR}/app\"")
 
-    configure_file(Doxyfile.in Doxyfile @ONLY)
+        configure_file(Doxyfile.in Doxyfile @ONLY)
 
-    add_custom_target(doc
-                      COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile
-                      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-                      COMMENT "Generating documentation..."
-                      VERBATIM)
-else()
-    message(STATUS "Doxygen not found, documentation won't be generated")
+        add_custom_target(doc
+                          COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile
+                          WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                          COMMENT "Generating documentation..."
+                          VERBATIM)
+    else()
+        message(STATUS "Doxygen not found, documentation won't be generated")
+    endif()
 endif()
