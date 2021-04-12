@@ -79,7 +79,7 @@ jobs:
             - run:
                 name: Generate JUnit XML report
                 command: |
-                  apt-get update && apt-get install -y python3 python3-lxml
+                  apt-get install -y python3 python3-lxml
                   mkdir build/test-results
                   python3 resources/scripts/CTest2JUnit/ctest2JUnit.py build \
                   resources/scripts/CTest2JUnit/CTest2JUnit.xsl > build/test-results/results.xml
@@ -104,7 +104,7 @@ jobs:
             - run:
                 name: Install and configure JFrog CLI
                 command: |
-                  apt-get update && apt-get install curl
+                  apt-get install curl
                   curl -fL https://getcli.jfrog.io | sh
                   ./jfrog rt c --url $JFROG_ARTIFACTORY_URL --user $JFROG_USERNAME --password \
                   $JFROG_PASSWORD
