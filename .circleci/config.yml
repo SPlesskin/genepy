@@ -27,24 +27,6 @@ commands:
             --password $Env:QT_ACCOUNT_PASSWORD --confirm-command --no-default-installations `
             --verbose --mirror http://qt.mirror.constant.com
 
-  upload-package:
-    description: "A command for uploading a Windows package to a JFrog repository"
-    parameters:
-      repository:
-        description: "Repository name or key"
-        type: string
-        default: genepy-windows-release
-    steps:
-      - run:
-          name: Install and configure JFrog CLI
-          command: |
-            choco install jfrog-cli
-            jfrog rt c --url $Env:JFROG_ARTIFACTORY_URL --user $Env:JFROG_USERNAME --password `
-            $Env:JFROG_PASSWORD
-      - run:
-          name: Upload package to JFrog
-          command: jfrog rt u "build/package/*.zip" << parameters.repository >>
-
 jobs:
   linux-build:
     docker:
@@ -101,16 +83,6 @@ jobs:
                   cd build
                   make package
                   mkdir installer && mv *.deb installer
-            - run:
-                name: Install and configure JFrog CLI
-                command: |
-                  apt-get install curl
-                  curl -fL https://getcli.jfrog.io | sh
-                  ./jfrog rt c --url $JFROG_ARTIFACTORY_URL --user $JFROG_USERNAME --password \
-                  $JFROG_PASSWORD
-            - run:
-                name: Upload installer to JFrog
-                command: ./jfrog rt u "build/installer/*.deb" genepy-linux-release
             - store_artifacts:
                 path: build/installer
 
@@ -176,7 +148,6 @@ jobs:
                   cd build
                   nmake package
                   mkdir package; mv *.zip package
-            - upload-package
             - store_artifacts:
                 path: build/package
 
@@ -237,20 +208,14 @@ jobs:
                   cd build
                   mingw32-make package
                   mkdir package; mv *.zip package
-            - upload-package
             - store_artifacts:
                 path: build/package
 
 workflows:
   genepy:
     jobs:
-      - linux-build:
-          context: jfrog
+      - linux-build
       - windows-msvc-build:
-          context:
-            - qt-project
-            - jfrog
+          context: qt-project
       - windows-mingw-build:
-          context:
-            - qt-project
-            - jfrog
+          context: qt-project
