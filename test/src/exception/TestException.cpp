@@ -17,9 +17,9 @@
  * along with Genepy.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "TestException.h"
-
 #include <genepy/exception/exception_macros.h>
+
+#include "TestException.h"
 
 void TestException::testMacro()
 {
@@ -38,7 +38,7 @@ void TestException::testMacro()
     }
     catch (const std::exception& e) {
         QVERIFY(true);
-        QCOMPARE(QString{e.what()}, QStringLiteral("Exception TestException.cpp:34: Test"));
+        QCOMPARE(QString{e.what()}, QStringLiteral("Exception TestException.cpp:36: Test"));
     }
 }
 

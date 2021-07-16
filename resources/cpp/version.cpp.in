@@ -27,9 +27,6 @@
 
 namespace genepy {
 
-const QVersionNumber kGenepyVersion
-{
-    @PROJECT_VERSION_MAJOR @, @PROJECT_VERSION_MINOR @, @PROJECT_VERSION_PATCH @
-};
+const QVersionNumber kGenepyVersion{@PROJECT_VERSION_MAJOR@, @PROJECT_VERSION_MINOR@, @PROJECT_VERSION_PATCH@};
 
 } // namespace genepy
