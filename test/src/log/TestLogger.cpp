@@ -17,9 +17,9 @@
  * along with Genepy.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "TestLogger.h"
-
 #include <genepy/log/Logger.h>
+
+#include "TestLogger.h"
 
 namespace {
 

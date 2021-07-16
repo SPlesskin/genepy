@@ -23,9 +23,9 @@
  * @date 09/10/2020
  */
 
-#include "LogLevelFormatter.h"
-
 #include <QtGlobal>
+
+#include "LogLevelFormatter.h"
 
 namespace genepy {
 

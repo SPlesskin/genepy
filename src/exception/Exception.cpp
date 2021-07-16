@@ -25,13 +25,13 @@
 
 #include <genepy/exception/Exception.h>
 
-namespace genepy {
-
 namespace {
 
 const auto kMessagePrefix = QStringLiteral("Exception ");
 
 } // namespace
+
+namespace genepy {
 
 Exception::Exception(const char* file, int line, const QString& cause)
     : message_{kMessagePrefix + file + ':' + QString::number(line) + ": " + cause},

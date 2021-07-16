@@ -40,6 +40,7 @@
  * @def GENEPY_THROW_EXCEPTION_IF(condition, cause)
  * @hideinitializer
  * @brief This macro throws an exception if the given condition is true.
+ * @ingroup exception
  *
  * Example:
  * ~~~{.cpp}
@@ -50,8 +51,6 @@
  *      return a / b;
  * }
  * ~~~
- *
- * @ingroup exception
  */
 #define GENEPY_THROW_EXCEPTION_IF(condition, cause)                                                \
     if (condition) {                                                                               \

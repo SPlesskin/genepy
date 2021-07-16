@@ -27,14 +27,14 @@
 
 #include <genepy/cli/ProgressBar.h>
 
-namespace genepy {
-
 namespace {
 
 const auto kCompletionChar = '=';
 const auto kCompletionCharWidth = 5; // i.e., 5%
 
 } // namespace
+
+namespace genepy {
 
 ProgressBar::ProgressBar(int totalStepCount) : totalStepCount_{totalStepCount}, currentStepCount_{0}
 {

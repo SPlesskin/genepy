@@ -23,17 +23,15 @@
  * @date 28/09/2020
  */
 
-#include <genepy/log/Logger.h>
-
 #include <QtCore/QDir>
 
 #include <spdlog/logger.h>
 #include <spdlog/sinks/null_sink.h>
 #include <spdlog/sinks/rotating_file_sink.h>
 
-#include "LogLevelFormatter.h"
+#include <genepy/log/Logger.h>
 
-namespace genepy {
+#include "LogLevelFormatter.h"
 
 namespace {
 
@@ -42,9 +40,11 @@ const auto kLogFileNameExt = QStringLiteral("log");
 const auto kMaxLogFileSize = 5 * 1024 * 1024; // 5 MB
 const auto kMaxNLogFiles = 3;
 const auto kLogMessageFormat =
-    QString{"%d/%m/%Y %H:%M:%S.%e %"} + LogLevelFormatter::kLogLevelFlag_ + " [%n] %v";
+    QString{"%d/%m/%Y %H:%M:%S.%e %"} + genepy::LogLevelFormatter::kLogLevelFlag_ + " [%n] %v";
 
 } // namespace
+
+namespace genepy {
 
 class LoggerImpl {
 public:

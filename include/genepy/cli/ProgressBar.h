@@ -38,6 +38,7 @@ namespace genepy {
 
 /**
  * @brief Provides an ASCII progress bar.
+ * @ingroup cli
  *
  * This functionality indicates the progress of an operation which consists of multiple consecutive
  * steps.
@@ -52,8 +53,6 @@ namespace genepy {
  *
  * timer.start(1000); // Timeout interval of 1 second (or 1000 milliseconds)
  * ~~~
- *
- * @ingroup cli
  */
 class GENEPY_EXPORT ProgressBar : public QObject {
 
