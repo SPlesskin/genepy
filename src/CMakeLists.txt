@@ -47,7 +47,7 @@ find_package(spdlog REQUIRED CONFIG)
 
 target_link_libraries(${GENEPY_LIBRARY}
                       PUBLIC Qt5::Core
-                      PRIVATE common spdlog::spdlog)
+                      PRIVATE ${GENEPY_COMPILER_CONFIGURATION} spdlog::spdlog)
 
 # Install binary and header files
 # ===============================

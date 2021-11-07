@@ -42,17 +42,20 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Set warning flags
 # =================
-add_library(common INTERFACE)
+set(GENEPY_COMPILER_CONFIGURATION ${GENEPY_PROJECT_NAME_L}-cc)
+
+add_library(${GENEPY_COMPILER_CONFIGURATION} INTERFACE)
 
 if(MSVC)
     genepy_find_qt_include_dir(GENEPY_QT_INCLUDE_DIR)
 
     # The /external:* switch group disables warnings for third-party header files
     # (https://devblogs.microsoft.com/cppblog/broken-warnings-theory/).
-    target_compile_options(common INTERFACE /WX /W4
-                                            /experimental:external /external:I ${GENEPY_QT_INCLUDE_DIR} /external:W0
-                                            /wd4275)
+    target_compile_options(${GENEPY_COMPILER_CONFIGURATION} INTERFACE /WX /W4
+                                                                      /experimental:external /external:I ${GENEPY_QT_INCLUDE_DIR} /external:W0
+                                                                      /wd4275)
 else()
-    target_compile_options(common INTERFACE -Werror -pedantic-errors -Wall -Wextra -Wconversion
-                                            -Wsign-conversion)
+    target_compile_options(${GENEPY_COMPILER_CONFIGURATION} INTERFACE -Werror -pedantic-errors -Wall
+                                                                      -Wextra -Wconversion
+                                                                      -Wsign-conversion)
 endif()

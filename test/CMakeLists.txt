@@ -30,7 +30,7 @@ if(BUILD_TESTING)
         file(GLOB_RECURSE _sources "${_dir}/${_name}.*")
 
         add_executable(${_name} ${_sources})
-        target_link_libraries(${_name} PRIVATE common Qt5::Test ${GENEPY_LIBRARY})
+        target_link_libraries(${_name} PRIVATE ${GENEPY_COMPILER_CONFIGURATION} Qt5::Test ${GENEPY_LIBRARY})
 
         add_test(NAME ${_name} COMMAND ${_name})
     endforeach()
