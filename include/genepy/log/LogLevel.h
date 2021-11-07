@@ -32,7 +32,14 @@ namespace genepy {
  * @brief Possible severity levels for log messages.
  * @ingroup log
  */
-enum class LogLevel { kTrace, kDebug, kInfo, kWarn, kError, kFatal };
+enum class LogLevel {
+    kTrace, ///< The _trace_ level.
+    kDebug, ///< The _debug_ level.
+    kInfo,  ///< The _info_ level.
+    kWarn,  ///< The _warn_ level.
+    kError, ///< The _error_ level.
+    kFatal  ///< The _fatal_ level.
+};
 
 } // namespace genepy
 

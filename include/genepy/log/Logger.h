@@ -56,7 +56,7 @@ public:
 
     /**
      * @brief Constructor.
-     * @param name name of the logger
+     * @param name the name of the logger
      */
     GENEPY_EXPORT explicit Logger(const QString& name);
 
@@ -67,6 +67,8 @@ public:
      * @brief Writes a message to the log file.
      * @param level the severity level associated with the message
      * @param message the message to write
+     * @param flush a boolean parameter which enables flushing the log buffer
+     * @note The `flush` parameter was added for testing purpose mainly.
      */
     GENEPY_EXPORT void log(LogLevel level, const QString& message, bool flush = false) const;
 
