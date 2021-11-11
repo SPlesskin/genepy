@@ -34,7 +34,10 @@
 namespace genepy {
 
 /// Version number of this library.
-GENEPY_EXPORT extern const QVersionNumber kGenepyVersion;
+GENEPY_EXPORT extern const QVersionNumber kVersion;
+
+/// Build datetime of the current version of this library.
+GENEPY_EXPORT extern const QDateTime kVersionBuildDatetime;
 
 } // namespace genepy
 

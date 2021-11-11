@@ -17,38 +17,16 @@
  * along with Genepy.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * @file version.cpp
- * @author Erwan
- * @date 10/09/2020
- */
-
-#include <QtCore/QDateTime>
-#include <QtCore/QLocale>
-
 #include <genepy/version.h>
 
-namespace {
+#include "TestVersion.h"
 
-QDateTime getBuildDatetime()
+void TestVersion::testVersion()
 {
-    const auto str = QString{__DATE__} + ' ' + __TIME__;
-
-    const auto format = QStringLiteral("MMM d yyyy hh:mm:ss");
-
-    // The date provided by the __DATE__ macro is in English. So, we use the "C" locale in order to
-    // retrieve a valid datetime.
-    return QLocale::c().toDateTime(str.simplified(), format);
+    QVERIFY(!genepy::kVersion.isNull());
+    QCOMPARE(genepy::kVersion.segmentCount(), 3);
 }
 
-} // namespace
+void TestVersion::testVersionBuildDatetime() { QVERIFY(genepy::kVersionBuildDatetime.isValid()); }
 
-namespace genepy {
-
-// clang-format off
-const QVersionNumber kVersion{@PROJECT_VERSION_MAJOR@, @PROJECT_VERSION_MINOR@, @PROJECT_VERSION_PATCH@};
-// clang-format on
-
-const QDateTime kVersionBuildDatetime = getBuildDatetime();
-
-} // namespace genepy
+QTEST_MAIN(TestVersion)
