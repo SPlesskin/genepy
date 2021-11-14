@@ -20,6 +20,11 @@ if(BUILD_TESTING)
     file(GLOB_RECURSE GENEPY_TEST_SOURCES src/Test*.cpp)
     file(GLOB_RECURSE GENEPY_TEST_HEADERS src/Test*.h)
 
+    file(GLOB_RECURSE GENEPY_TEST_COMMON_SOURCES src/*.cpp)
+    file(GLOB_RECURSE GENEPY_TEST_COMMON_HEADERS src/*.h)
+    list(REMOVE_ITEM GENEPY_TEST_COMMON_SOURCES ${GENEPY_TEST_SOURCES})
+    list(REMOVE_ITEM GENEPY_TEST_COMMON_HEADERS ${GENEPY_TEST_HEADERS})
+
     find_package(Qt5 REQUIRED COMPONENTS Test)
 
     foreach(_file ${GENEPY_TEST_SOURCES})
@@ -28,6 +33,8 @@ if(BUILD_TESTING)
 
         # List the source files of the current test
         file(GLOB_RECURSE _sources "${_dir}/${_name}.*")
+        list(APPEND _sources ${GENEPY_TEST_COMMON_SOURCES})
+        list(APPEND _sources ${GENEPY_TEST_COMMON_HEADERS})
 
         add_executable(${_name} ${_sources})
         target_link_libraries(${_name} PRIVATE ${GENEPY_COMPILER_CONFIGURATION} Qt5::Test ${GENEPY_LIBRARY})
