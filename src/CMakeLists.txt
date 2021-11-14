@@ -42,11 +42,11 @@ target_include_directories(${GENEPY_LIBRARY}
                            SYSTEM INTERFACE $<BUILD_INTERFACE:${GENEPY_INCLUDE_DIR}>
                                             $<INSTALL_INTERFACE:${GENEPY_INCLUDE_INSTALL_DIR}>)
 
-find_package(Qt5 REQUIRED COMPONENTS Core)
+find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
 find_package(spdlog REQUIRED CONFIG)
 
 target_link_libraries(${GENEPY_LIBRARY}
-                      PUBLIC Qt5::Core
+                      PUBLIC Qt5::Core Qt5::Widgets
                       PRIVATE ${GENEPY_COMPILER_CONFIGURATION} spdlog::spdlog)
 
 # Install binary and header files
