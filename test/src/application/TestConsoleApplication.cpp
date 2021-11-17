@@ -22,11 +22,25 @@
 #include "../common.h"
 #include "TestConsoleApplication.h"
 
+void TestConsoleApplication::initTestCase()
+{
+    expectedPreferenceDir_ = QDir{common::kDummyApplicationPreferenceDirectoryPath};
+
+    if (expectedPreferenceDir_.exists()) {
+        expectedPreferenceDir_.removeRecursively();
+    }
+}
+
+void TestConsoleApplication::cleanupTestCase()
+{
+    if (expectedPreferenceDir_.exists()) {
+        expectedPreferenceDir_.removeRecursively();
+    }
+}
+
 void TestConsoleApplication::testConstructor()
 {
-    const auto expectedPreferenceDir = QDir{common::kDummyApplicationPreferenceDirectoryPath};
-
-    QVERIFY(!expectedPreferenceDir.exists());
+    QVERIFY(!expectedPreferenceDir_.exists());
 
     const char* argument = "./test";
 
@@ -34,7 +48,7 @@ void TestConsoleApplication::testConstructor()
     char** argv = new char*[argc + 1];
     argv[0] = new char[strlen(argument) + 1];
     strcpy(argv[0], argument);
-    argv[1] = nullptr;
+    argv[1] = nullptr; // argv[argc] shall be a null pointer.
 
     genepy::ConsoleApplication app{common::kDummyApplicationName, common::kDummyApplicationVersion,
                                    argc, argv};
@@ -46,13 +60,7 @@ void TestConsoleApplication::testConstructor()
     auto preferenceDir = app.getPreferenceDirectory();
 
     QVERIFY(preferenceDir.exists());
-    QCOMPARE(preferenceDir.path(), expectedPreferenceDir.path());
-
-    // Clean-up the test function
-    preferenceDir.cdUp();
-    if (!preferenceDir.removeRecursively()) {
-        qDebug() << "Can't remove directory" << preferenceDir.path();
-    }
+    QCOMPARE(preferenceDir.path(), expectedPreferenceDir_.path());
 }
 
-QTEST_MAIN(TestConsoleApplication)
+QTEST_APPLESS_MAIN(TestConsoleApplication)

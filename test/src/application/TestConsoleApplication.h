@@ -27,7 +27,12 @@ class TestConsoleApplication : public QObject {
     Q_OBJECT
 
 private slots:
+    void initTestCase();
+    void cleanupTestCase();
     void testConstructor();
+
+private:
+    QDir expectedPreferenceDir_;
 };
 
 #endif // TESTCONSOLEAPPLICATION_H

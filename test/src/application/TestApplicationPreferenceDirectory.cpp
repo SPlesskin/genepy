@@ -22,23 +22,31 @@
 #include "../common.h"
 #include "TestApplicationPreferenceDirectory.h"
 
+void TestApplicationPreferenceDirectory::initTestCase()
+{
+    expectedDir_ = QDir{common::kDummyApplicationPreferenceDirectoryPath};
+
+    if (expectedDir_.exists()) {
+        expectedDir_.removeRecursively();
+    }
+}
+
+void TestApplicationPreferenceDirectory::cleanupTestCase()
+{
+    if (expectedDir_.exists()) {
+        expectedDir_.removeRecursively();
+    }
+}
+
 void TestApplicationPreferenceDirectory::testConstructor()
 {
-    const auto expectedDir = QDir{common::kDummyApplicationPreferenceDirectoryPath};
-
-    QVERIFY(!expectedDir.exists());
+    QVERIFY(!expectedDir_.exists());
 
     auto dir = genepy::ApplicationPreferenceDirectory{common::kDummyApplicationName,
                                                       common::kDummyApplicationVersion};
 
     QVERIFY(dir.exists());
-    QCOMPARE(dir.path(), expectedDir.path());
-
-    // Clean-up the test function
-    dir.cdUp();
-    if (!dir.removeRecursively()) {
-        qDebug() << "Can't remove directory" << dir.path();
-    }
+    QCOMPARE(dir.path(), expectedDir_.path());
 }
 
-QTEST_MAIN(TestApplicationPreferenceDirectory)
+QTEST_APPLESS_MAIN(TestApplicationPreferenceDirectory)

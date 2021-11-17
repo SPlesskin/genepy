@@ -27,7 +27,12 @@ class TestApplicationPreferenceDirectory : public QObject {
     Q_OBJECT
 
 private slots:
+    void initTestCase();
+    void cleanupTestCase();
     void testConstructor();
+
+private:
+    QDir expectedDir_;
 };
 
 #endif // TESTAPPLICATIONPREFERENCEDIRECTORY_H

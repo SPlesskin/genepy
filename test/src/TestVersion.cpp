@@ -29,4 +29,4 @@ void TestVersion::testVersion()
 
 void TestVersion::testVersionBuildDatetime() { QVERIFY(genepy::kVersionBuildDatetime.isValid()); }
 
-QTEST_MAIN(TestVersion)
+QTEST_APPLESS_MAIN(TestVersion)
