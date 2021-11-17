@@ -29,6 +29,7 @@
 #include <QtCore/QCoreApplication>
 
 #include <genepy/application/ApplicationPreferenceDirectory.h>
+#include <genepy/genepy_global.h>
 
 class QVersionNumber;
 
@@ -42,7 +43,7 @@ namespace genepy {
  * @brief Provides a console (i.e., non-GUI) application.
  * @ingroup application
  */
-class ConsoleApplication : public QCoreApplication {
+class GENEPY_EXPORT ConsoleApplication : public QCoreApplication {
 public:
     /**
      * @brief Constructor.

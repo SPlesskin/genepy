@@ -28,6 +28,8 @@
 
 #include <QtCore/QDir>
 
+#include <genepy/genepy_global.h>
+
 class QVersionNumber;
 
 namespace genepy {
@@ -40,7 +42,7 @@ namespace genepy {
  *
  * @ingroup application
  */
-class ApplicationPreferenceDirectory : public QDir {
+class GENEPY_EXPORT ApplicationPreferenceDirectory : public QDir {
 public:
     /**
      * @brief Constructor.
