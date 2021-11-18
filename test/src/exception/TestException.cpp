@@ -24,7 +24,7 @@
 void TestException::testMacro()
 {
     try {
-        GENEPY_THROW_EXCEPTION_IF(false, "Test")
+        GENEPY_THROW_EXCEPTION_IF(false, "Message")
         QVERIFY(true);
     }
     catch (const std::exception& e) {
@@ -33,13 +33,13 @@ void TestException::testMacro()
     }
 
     try {
-        GENEPY_THROW_EXCEPTION_IF(true, "Test")
+        GENEPY_THROW_EXCEPTION_IF(true, "Message")
         QVERIFY(false);
     }
     catch (const std::exception& e) {
         QVERIFY(true);
-        QCOMPARE(QString{e.what()}, QStringLiteral("Exception TestException.cpp:36: Test"));
+        QCOMPARE(QString{e.what()}, QStringLiteral("Exception TestException.cpp:36: Message"));
     }
 }
 
-QTEST_MAIN(TestException)
+QTEST_APPLESS_MAIN(TestException)
