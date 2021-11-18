@@ -47,7 +47,7 @@ void TestGuiApplication::testConstructor()
     int argc = 1;
     char** argv = new char*[argc + 1];
     argv[0] = new char[strlen(argument) + 1];
-    strcpy(argv[0], argument);
+    strcpy_s(argv[0], strlen(argument) + 1, argument);
     argv[1] = nullptr; // argv[argc] shall be a null pointer.
 
     genepy::GuiApplication app{common::kDummyApplicationName, common::kDummyApplicationVersion,
