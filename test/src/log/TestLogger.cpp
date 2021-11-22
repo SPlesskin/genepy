@@ -54,7 +54,11 @@ void TestLogger::initTestCase()
     int argc = 1;
     char** argv = new char*[argc + 1];
     argv[0] = new char[strlen(argument) + 1];
+#ifndef Q_CC_GNU
     strcpy_s(argv[0], strlen(argument) + 1, argument);
+#else
+    strcpy(argv[0], argument);
+#endif
     argv[1] = nullptr;
 
     application_ = std::make_unique<genepy::ConsoleApplication>(
