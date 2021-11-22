@@ -23,20 +23,20 @@
  * @date 28/09/2020
  */
 
-#include <QtCore/QDir>
-
 #include <spdlog/logger.h>
 #include <spdlog/sinks/null_sink.h>
 #include <spdlog/sinks/rotating_file_sink.h>
 
+#include <genepy/application/ConsoleApplication.h>
+#include <genepy/application/GuiApplication.h>
 #include <genepy/log/Logger.h>
 
 #include "LogLevelFormatter.h"
 
 namespace {
 
-const auto kLogDirName = QStringLiteral("log");
-const auto kLogFileNameExt = QStringLiteral("log");
+const auto kLogDirectoryName = QStringLiteral("log");
+const auto kLogFileNameExtension = QStringLiteral("log");
 const auto kMaxLogFileSize = 5 * 1024 * 1024; // 5 MB
 const auto kMaxNLogFiles = 3;
 const auto kLogMessageFormat =
@@ -48,12 +48,23 @@ namespace genepy {
 
 class LoggerImpl {
 public:
-    static void initialize(const QString& appName, const QVersionNumber& appVersion)
+    static void initialize(QCoreApplication* application)
     {
         // Define the path to the log file...
-        const auto logDirPath = QDir::homePath() + "/." + appName.toLower() + '/' +
-                                appVersion.toString() + '/' + kLogDirName;
-        const auto logFilePath = logDirPath + '/' + appName.toLower() + '.' + kLogFileNameExt;
+#define LOG_FILE_PATH                                                                              \
+    app->getPreferenceDirectory().path() + '/' + kLogDirectoryName + '/' +                         \
+        app->applicationName().toLower() + '.' + kLogFileNameExtension
+
+        const auto logFilePath = [application]() {
+            if (auto* app = dynamic_cast<ConsoleApplication*>(application)) {
+                return LOG_FILE_PATH;
+            }
+            else if (auto* app = dynamic_cast<GuiApplication*>(application)) {
+                return LOG_FILE_PATH;
+            }
+
+            Q_UNREACHABLE();
+        }();
 
         // ...and configure it
         sink_ = std::make_shared<spdlog::sinks::rotating_file_sink_st>(
@@ -86,10 +97,7 @@ private:
 
 spdlog::sink_ptr LoggerImpl::sink_{new spdlog::sinks::null_sink_st};
 
-void Logger::initialize(const QString& appName, const QVersionNumber& appVersion)
-{
-    LoggerImpl::initialize(appName, appVersion);
-}
+void Logger::initialize(QCoreApplication* application) { LoggerImpl::initialize(application); }
 
 Logger::Logger(const QString& name) : impl_{new LoggerImpl{name}} {}
 

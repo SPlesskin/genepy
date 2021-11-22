@@ -18,6 +18,7 @@
  */
 
 #include <QtCore/QDir>
+#include <QtCore/QDirIterator>
 
 #include "common.h"
 

@@ -33,6 +33,8 @@
 #include <genepy/genepy_global.h>
 #include <genepy/log/LogLevel.h>
 
+class QCoreApplication;
+
 namespace genepy {
 
 class LoggerImpl;
@@ -49,10 +51,9 @@ class Logger {
 public:
     /**
      * @brief Initializes this class.
-     * @param appName the name of an application
-     * @param appVersion the version number of the aforementioned application
+     * @param application a pointer to a QCoreApplication instance
      */
-    GENEPY_EXPORT static void initialize(const QString& appName, const QVersionNumber& appVersion);
+    GENEPY_EXPORT static void initialize(QCoreApplication* application);
 
     /**
      * @brief Constructor.

@@ -20,7 +20,11 @@
 #ifndef TESTLOGGER_H
 #define TESTLOGGER_H
 
+#include <memory>
+
 #include <QtTest/QtTest>
+
+#include <genepy/application/ConsoleApplication.h>
 
 class TestLogger : public QObject {
 
@@ -34,8 +38,9 @@ private slots:
     void testLog();
 
 private:
-    QDir workingDir_;
-    QString logFilePath_;
+    std::unique_ptr<genepy::ConsoleApplication> application_;
+    QDir expectedLogDir_;
+    QString expectedLogFileName_;
 };
 
 #endif // TESTLOGGER_H
