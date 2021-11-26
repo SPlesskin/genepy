@@ -51,16 +51,16 @@ public:
     static void initialize(QCoreApplication* application)
     {
         // Define the path to the log file...
-#define LOG_FILE_PATH                                                                              \
-    app->getPreferenceDirectory().path() + '/' + kLogDirectoryName + '/' +                         \
-        app->applicationName().toLower() + '.' + kLogFileNameExtension
+#define LOG_FILE_PATH(application)                                                                 \
+    application->getPreferenceDirectory().path() + '/' + kLogDirectoryName + '/' +                 \
+        application->applicationName().toLower() + '.' + kLogFileNameExtension
 
         const auto logFilePath = [application]() {
-            if (auto* app = dynamic_cast<ConsoleApplication*>(application)) {
-                return LOG_FILE_PATH;
+            if (auto* consoleApplication = dynamic_cast<ConsoleApplication*>(application)) {
+                return LOG_FILE_PATH(consoleApplication);
             }
-            else if (auto* app = dynamic_cast<GuiApplication*>(application)) {
-                return LOG_FILE_PATH;
+            else if (auto* guiApplication = dynamic_cast<GuiApplication*>(application)) {
+                return LOG_FILE_PATH(guiApplication);
             }
 
             Q_UNREACHABLE();
