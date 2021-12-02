@@ -54,14 +54,14 @@ void TestGuiApplication::testConstructor()
 #endif
     argv[1] = nullptr; // argv[argc] shall be a null pointer.
 
-    genepy::GuiApplication app{common::kDummyApplicationName, common::kDummyApplicationVersion,
-                               argc, argv};
+    const genepy::GuiApplication app{common::kDummyApplicationInformation, argc, argv};
 
     QCOMPARE(genepy::GuiApplication::applicationName(), common::kDummyApplicationName);
     QCOMPARE(genepy::GuiApplication::applicationVersion(),
              common::kDummyApplicationVersion.toString());
+    QCOMPARE(app.getDescription(), common::kDummyApplicationDescription);
 
-    auto preferenceDir = app.getPreferenceDirectory();
+    const auto preferenceDir = app.getPreferenceDirectory();
 
     QVERIFY(preferenceDir.exists());
     QCOMPARE(preferenceDir.path(), expectedPreferenceDir_.path());

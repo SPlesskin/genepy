@@ -54,14 +54,14 @@ void TestConsoleApplication::testConstructor()
 #endif
     argv[1] = nullptr; // argv[argc] shall be a null pointer.
 
-    genepy::ConsoleApplication app{common::kDummyApplicationName, common::kDummyApplicationVersion,
-                                   argc, argv};
+    const genepy::ConsoleApplication app{common::kDummyApplicationInformation, argc, argv};
 
     QCOMPARE(genepy::ConsoleApplication::applicationName(), common::kDummyApplicationName);
     QCOMPARE(genepy::ConsoleApplication::applicationVersion(),
              common::kDummyApplicationVersion.toString());
+    QCOMPARE(app.getDescription(), common::kDummyApplicationDescription);
 
-    auto preferenceDir = app.getPreferenceDirectory();
+    const auto preferenceDir = app.getPreferenceDirectory();
 
     QVERIFY(preferenceDir.exists());
     QCOMPARE(preferenceDir.path(), expectedPreferenceDir_.path());

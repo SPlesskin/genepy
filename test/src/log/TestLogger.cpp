@@ -62,7 +62,7 @@ void TestLogger::initTestCase()
     argv[1] = nullptr;
 
     application_ = std::make_unique<genepy::ConsoleApplication>(
-        common::kDummyApplicationName, common::kDummyApplicationVersion, argc, argv);
+        common::kDummyApplicationInformation, argc, argv);
 
     expectedLogDir_.setPath(application_->getPreferenceDirectory().path() + "/log");
     expectedLogFileName_ = common::kDummyApplicationName.toLower() + ".log";

@@ -17,22 +17,29 @@
  * along with Genepy.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDir>
-#include <QtCore/QDirIterator>
+/**
+ * @file ApplicationApplication.h
+ * @author Erwan
+ * @date 02/12/2021
+ */
 
-#include "common.h"
+#ifndef GENEPY_APPLICATIONINFORMATION_H
+#define GENEPY_APPLICATIONINFORMATION_H
 
-namespace common {
+#include <QtCore/QVersionNumber>
 
-const QString kDummyApplicationName = QStringLiteral("Test");
-const QVersionNumber kDummyApplicationVersion{1, 0, 0};
-const QString kDummyApplicationDescription = QStringLiteral("This is a dummy application.");
+namespace genepy {
 
-const genepy::ApplicationInformation kDummyApplicationInformation = {
-    kDummyApplicationName, kDummyApplicationVersion, kDummyApplicationDescription};
+/**
+ * @brief Gathers information about an application.
+ * @ingroup application
+ */
+struct ApplicationInformation {
+    QString name;           ///< The name of the application.
+    QVersionNumber version; ///< The version number of the application.
+    QString description;    ///< A description of the application.
+};
 
-const QString kDummyApplicationPreferenceDirectoryPath = QDir::homePath() + "/." +
-                                                         kDummyApplicationName.toLower() + '/' +
-                                                         kDummyApplicationVersion.toString();
+} // namespace genepy
 
-} // namespace common
+#endif // GENEPY_APPLICATIONINFORMATION_H

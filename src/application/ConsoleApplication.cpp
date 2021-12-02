@@ -25,17 +25,22 @@
 
 #include <QtCore/QVersionNumber>
 
+#include <genepy/application/ApplicationInformation.h>
 #include <genepy/application/ConsoleApplication.h>
 
 namespace genepy {
 
-ConsoleApplication::ConsoleApplication(const QString& name, const QVersionNumber& version,
-                                       int& argc, char** argv)
-    : QCoreApplication{argc, argv}, preferenceDirectory_{name, version}
+ConsoleApplication::ConsoleApplication(const ApplicationInformation& information, int& argc,
+                                       char** argv)
+    : QCoreApplication{argc, argv},
+      description_{information.description},
+      preferenceDirectory_{information.name, information.version}
 {
-    setApplicationName(name);
-    setApplicationVersion(version.toString());
+    setApplicationName(information.name);
+    setApplicationVersion(information.version.toString());
 }
+
+QString ConsoleApplication::getDescription() const { return description_; }
 
 ApplicationPreferenceDirectory ConsoleApplication::getPreferenceDirectory() const
 {

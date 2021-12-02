@@ -35,6 +35,8 @@ class QVersionNumber;
 
 namespace genepy {
 
+struct ApplicationInformation;
+
 /**
  * @brief Provides a GUI application.
  * @ingroup application
@@ -43,17 +45,20 @@ class GENEPY_EXPORT GuiApplication : public QApplication {
 public:
     /**
      * @brief Constructor.
-     * @param name the name of this application
-     * @param version the version number of this application
+     * @param information information about this application
      * @param argc the number of command-line arguments
      * @param argv the command-line arguments
      */
-    GuiApplication(const QString& name, const QVersionNumber& version, int& argc, char** argv);
+    GuiApplication(const ApplicationInformation& information, int& argc, char** argv);
 
-    /// @brief Returns the preference directory of this application.
+    /// Returns a description of this application.
+    QString getDescription() const;
+
+    /// Returns the preference directory of this application.
     ApplicationPreferenceDirectory getPreferenceDirectory() const;
 
 private:
+    const QString description_;
     const ApplicationPreferenceDirectory preferenceDirectory_;
 };
 

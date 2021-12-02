@@ -22,10 +22,16 @@
 
 #include <QtCore/QVersionNumber>
 
+#include <genepy/application/ApplicationInformation.h>
+
 namespace common {
 
 extern const QString kDummyApplicationName;
 extern const QVersionNumber kDummyApplicationVersion;
+extern const QString kDummyApplicationDescription;
+
+extern const genepy::ApplicationInformation kDummyApplicationInformation;
+
 extern const QString kDummyApplicationPreferenceDirectoryPath;
 
 } // namespace common

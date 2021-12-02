@@ -52,8 +52,8 @@ public:
     /**
      * @brief Initializes this class.
      * @param application a pointer to a QCoreApplication instance
-     * @attention The `application` parameter must be castable to a genepy::ConsoleApplication or
-     * genepy::GuiApplication pointer.
+     * @attention The `application` parameter must be castable to a pointer to a
+     * genepy::ConsoleApplication or genepy::GuiApplication object.
      */
     GENEPY_EXPORT static void initialize(QCoreApplication* application);
 
