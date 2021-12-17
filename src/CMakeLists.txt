@@ -24,7 +24,9 @@ configure_file(${GENEPY_RESOURCE_DIR}/cpp/version.cpp.in "${CMAKE_CURRENT_SOURCE
 
 file(GLOB_RECURSE GENEPY_LIBRARY_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB_RECURSE GENEPY_LIBRARY_HEADERS ${GENEPY_INCLUDE_DIR}/*.h
-                                         "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
+                                         ${GENEPY_INCLUDE_DIR}/*.ipp
+                                         "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+                                         "${CMAKE_CURRENT_SOURCE_DIR}/*.ipp")
 
 # Build the library
 # =================

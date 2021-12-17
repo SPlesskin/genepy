@@ -27,7 +27,8 @@ if(GENEPY_USE_CLANG_FORMAT)
         message(STATUS "clang-format found: ${GENEPY_CLANG_FORMAT_EXECUTABLE}")
 
         # Collect the files to format
-        file(GLOB_RECURSE GENEPY_FILES_TO_FORMAT src/*.cpp src/*.h include/*.h test/*.cpp test/*.h)
+        file(GLOB_RECURSE GENEPY_FILES_TO_FORMAT src/*.cpp src/*.h src/*.ipp include/*.h
+                                                 include/*.ipp test/*.cpp test/*.h)
 
         add_custom_target(format ALL
                           COMMAND ${GENEPY_CLANG_FORMAT_EXECUTABLE} -i -style=file ${GENEPY_FILES_TO_FORMAT}
