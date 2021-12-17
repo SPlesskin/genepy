@@ -18,7 +18,7 @@
  */
 
 /**
- * @file ApplicationApplication.h
+ * @file ApplicationInformation.h
  * @author Erwan
  * @date 02/12/2021
  */

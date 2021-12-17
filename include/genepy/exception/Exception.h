@@ -46,9 +46,9 @@ class GENEPY_EXPORT Exception : public std::exception {
 public:
     /**
      * @brief Constructor.
-     * @param file the name of the source file where the exception was raised
-     * @param line the number of the line where the exception was raised
-     * @param cause a string which indicates the cause of the exception
+     * @param file the name of the source file where this exception was raised
+     * @param line the number of the line where this exception was raised
+     * @param cause a string which indicates the cause of this exception
      */
     Exception(const char* file, int line, const QString& cause);
 

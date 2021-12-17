@@ -59,7 +59,7 @@ public:
 
     /**
      * @brief Constructor.
-     * @param name the name of the logger
+     * @param name the name of this logger
      */
     GENEPY_EXPORT explicit Logger(const QString& name);
 
