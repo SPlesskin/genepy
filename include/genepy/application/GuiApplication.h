@@ -29,7 +29,6 @@
 #include <QtWidgets/QApplication>
 
 #include <genepy/application/ApplicationPreferenceDirectory.h>
-#include <genepy/genepy_global.h>
 
 class QVersionNumber;
 
