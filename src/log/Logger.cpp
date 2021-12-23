@@ -50,11 +50,11 @@ class LoggerImpl {
 public:
     static void initialize(QCoreApplication* application)
     {
-        // Define the path to the log file...
 #define LOG_FILE_PATH(application)                                                                 \
     application->getPreferenceDirectory().path() + '/' + kLogDirectoryName + '/' +                 \
         application->applicationName().toLower() + '.' + kLogFileNameExtension
 
+        // Define the path to the log file...
         const auto logFilePath = [application]() {
             if (auto* consoleApplication = dynamic_cast<ConsoleApplication*>(application)) {
                 return LOG_FILE_PATH(consoleApplication);

@@ -41,7 +41,7 @@ CommandLineParserBuilder& CommandLineParserBuilder::addArgument(const QString& n
                                                                 const QString& syntax)
 {
     parser_.parser_->addPositionalArgument(name, description, syntax);
-    parser_.arguments_ << CommandLineArgument{name};
+    parser_.arguments_ << QSharedPointer<CommandLineArgument>::create(name);
 
     return *this;
 }
@@ -51,7 +51,7 @@ CommandLineParserBuilder& CommandLineParserBuilder::addOption(const QStringList&
                                                               const QString& valueName)
 {
     parser_.parser_->addOption(QCommandLineOption{names, description, valueName});
-    parser_.options_ << CommandLineOption{names};
+    parser_.options_ << QSharedPointer<CommandLineOption>::create(names);
 
     return *this;
 }

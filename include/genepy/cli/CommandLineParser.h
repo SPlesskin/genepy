@@ -28,6 +28,7 @@
 
 #include <QtCore/QCommandLineOption>
 #include <QtCore/QSharedPointer>
+#include <QtCore/QVector>
 
 #include <genepy/cli/CommandLineArgument.h>
 #include <genepy/cli/CommandLineOption.h>
@@ -91,10 +92,10 @@ private:
     const QCommandLineOption versionOption_;
 
     // Mandatory arguments
-    QVector<CommandLineArgument> arguments_;
+    QVector<QSharedPointer<CommandLineArgument>> arguments_;
 
     // Custom optional arguments
-    QVector<CommandLineOption> options_;
+    QVector<QSharedPointer<CommandLineOption>> options_;
 };
 
 } // namespace genepy

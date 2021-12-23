@@ -32,8 +32,8 @@ template <typename T>
 T CommandLineParser::getArgumentValue(const QString& name) const
 {
     for (auto i = 0; i < arguments_.size(); ++i) {
-        if (arguments_[i].getName() == name) {
-            return arguments_[i].getValue<T>();
+        if (arguments_[i]->getName() == name) {
+            return arguments_[i]->getValue<T>();
         }
     }
 }
@@ -42,8 +42,8 @@ template <typename T>
 T CommandLineParser::getOptionValue(const QString& name) const
 {
     for (auto i = 0; i < options_.size(); ++i) {
-        if (options_[i].getNames().contains(name)) {
-            return options_[i].getValue<T>();
+        if (options_[i]->getNames().contains(name)) {
+            return options_[i]->getValue<T>();
         }
     }
 }

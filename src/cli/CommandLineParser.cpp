@@ -68,7 +68,7 @@ void CommandLineParser::doParsing()
     }
 
     for (auto i = 0; i < arguments.size(); ++i) {
-        arguments_[i].setValue(arguments[i]);
+        arguments_[i]->setValue(arguments[i]);
     }
 
     /********************************************
@@ -76,10 +76,10 @@ void CommandLineParser::doParsing()
      ********************************************/
     for (auto i = 0; i < options_.size(); ++i) {
         if (std::any_of(
-                std::cbegin(options_[i].getNames()), std::cend(options_[i].getNames()),
+                std::cbegin(options_[i]->getNames()), std::cend(options_[i]->getNames()),
                 [this](const QString& name) { return parser_->optionNames().contains(name); })) {
-            options_[i].setPresent();
-            options_[i].setValue(parser_->value(options_[i].getNames().first()));
+            options_[i]->setPresent();
+            options_[i]->setValue(parser_->value(options_[i]->getNames().first()));
         }
     }
 }
@@ -87,8 +87,8 @@ void CommandLineParser::doParsing()
 bool CommandLineParser::isOptionPresent(const QString& name) const
 {
     for (auto i = 0; i < options_.size(); ++i) {
-        if (options_[i].getNames().contains(name)) {
-            return options_[i].isPresent();
+        if (options_[i]->getNames().contains(name)) {
+            return options_[i]->isPresent();
         }
     }
 
