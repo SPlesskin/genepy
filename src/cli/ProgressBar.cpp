@@ -23,9 +23,9 @@
  * @date 11/04/2021
  */
 
-#include <iostream>
-
 #include <genepy/cli/ProgressBar.h>
+
+#include <iostream>
 
 namespace {
 

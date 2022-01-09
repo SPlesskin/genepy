@@ -23,13 +23,14 @@
  * @date 28/09/2020
  */
 
+#include <genepy/log/Logger.h>
+
 #include <spdlog/logger.h>
 #include <spdlog/sinks/null_sink.h>
 #include <spdlog/sinks/rotating_file_sink.h>
 
 #include <genepy/application/ConsoleApplication.h>
 #include <genepy/application/GuiApplication.h>
-#include <genepy/log/Logger.h>
 
 #include "LogLevelFormatter.h"
 

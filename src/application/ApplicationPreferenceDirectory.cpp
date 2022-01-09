@@ -23,9 +23,10 @@
  * @date 12/11/2021
  */
 
+#include <genepy/application/ApplicationPreferenceDirectory.h>
+
 #include <QtCore/QVersionNumber>
 
-#include <genepy/application/ApplicationPreferenceDirectory.h>
 #include <genepy/exception/exception_macros.h>
 
 namespace {

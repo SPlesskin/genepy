@@ -17,9 +17,9 @@
  * along with Genepy.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <genepy/version.h>
-
 #include "TestVersion.h"
+
+#include <genepy/version.h>
 
 void TestVersion::testVersion()
 {

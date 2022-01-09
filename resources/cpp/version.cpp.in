@@ -23,10 +23,10 @@
  * @date 10/09/2020
  */
 
+#include <genepy/version.h>
+
 #include <QtCore/QDateTime>
 #include <QtCore/QLocale>
-
-#include <genepy/version.h>
 
 namespace {
 

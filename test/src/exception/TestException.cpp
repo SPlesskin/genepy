@@ -17,9 +17,9 @@
  * along with Genepy.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <genepy/exception/exception_macros.h>
-
 #include "TestException.h"
+
+#include <genepy/exception/exception_macros.h>
 
 void TestException::testMacro()
 {

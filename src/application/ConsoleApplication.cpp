@@ -23,10 +23,11 @@
  * @date 11/11/2021
  */
 
+#include <genepy/application/ConsoleApplication.h>
+
 #include <QtCore/QVersionNumber>
 
 #include <genepy/application/ApplicationInformation.h>
-#include <genepy/application/ConsoleApplication.h>
 
 namespace genepy {
 

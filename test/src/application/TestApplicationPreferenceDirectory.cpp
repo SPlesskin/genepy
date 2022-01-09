@@ -17,10 +17,11 @@
  * along with Genepy.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include "TestApplicationPreferenceDirectory.h"
+
 #include <genepy/application/ApplicationPreferenceDirectory.h>
 
 #include "../common.h"
-#include "TestApplicationPreferenceDirectory.h"
 
 void TestApplicationPreferenceDirectory::initTestCase()
 {
