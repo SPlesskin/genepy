@@ -33,8 +33,7 @@ file(GLOB_RECURSE GENEPY_LIBRARY_HEADERS ${GENEPY_INCLUDE_DIR}/*.h
 set(GENEPY_LIBRARY ${GENEPY_PROJECT_NAME_L})
 
 # Although ignored, the headers are listed below so that they show up in IDEs.
-add_library(${GENEPY_LIBRARY} SHARED ${GENEPY_LIBRARY_SOURCES}
-                                     ${GENEPY_LIBRARY_HEADERS})
+add_library(${GENEPY_LIBRARY} SHARED ${GENEPY_LIBRARY_SOURCES} ${GENEPY_LIBRARY_HEADERS})
 
 target_compile_definitions(${GENEPY_LIBRARY} PRIVATE GENEPY_LIBRARY)
 

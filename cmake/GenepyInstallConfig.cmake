@@ -30,11 +30,9 @@ configure_package_config_file(${GENEPY_RESOURCE_DIR}/cmake/${PROJECT_NAME}Config
                               INSTALL_DESTINATION ${GENEPY_CMAKE_INSTALL_DIR})
 
 set(GENEPY_CMAKE_VERSION_FILE ${GENEPY_OUTPUT_DIR}/${GENEPY_CMAKE_INSTALL_DIR}/${PROJECT_NAME}ConfigVersion.cmake)
-write_basic_package_version_file(${GENEPY_CMAKE_VERSION_FILE}
-                                 VERSION ${PROJECT_VERSION}
-                                 COMPATIBILITY SameMajorVersion)
+write_basic_package_version_file(${GENEPY_CMAKE_VERSION_FILE} VERSION ${PROJECT_VERSION}
+                                                              COMPATIBILITY SameMajorVersion)
 
 # Install the above created files
-install(FILES ${GENEPY_CMAKE_CONFIG_FILE}
-              ${GENEPY_CMAKE_VERSION_FILE}
+install(FILES ${GENEPY_CMAKE_CONFIG_FILE} ${GENEPY_CMAKE_VERSION_FILE}
         DESTINATION ${GENEPY_CMAKE_INSTALL_DIR})

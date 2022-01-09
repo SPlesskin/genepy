@@ -19,9 +19,8 @@
 option(GENEPY_USE_CLANG_FORMAT "Use clang-format to automatically format C++ files" OFF)
 
 if(GENEPY_USE_CLANG_FORMAT)
-    find_program(GENEPY_CLANG_FORMAT_EXECUTABLE
-                 NAMES clang-format
-                 DOC "Path to clang-format executable.")
+    find_program(GENEPY_CLANG_FORMAT_EXECUTABLE NAMES clang-format
+                                                DOC "Path to clang-format executable.")
 
     if(GENEPY_CLANG_FORMAT_EXECUTABLE)
         message(STATUS "clang-format found: ${GENEPY_CLANG_FORMAT_EXECUTABLE}")
