@@ -17,41 +17,20 @@
  * along with Genepy.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * @file CommandLineParser.ipp
- * @author Erwan
- * @date 16/12/2021
- */
+#include <genepy/application/ConsoleApplication.h>
+#include <genepy/cli/CommandLineParserBuilder.h>
 
-#ifndef GENEPY_COMMANDLINEPARSER_IPP
-#define GENEPY_COMMANDLINEPARSER_IPP
+#include "../../common.h"
 
-namespace genepy {
-
-template <typename T>
-T CommandLineParser::getArgumentValue(const QString& name) const
+int main(int argc, char** argv)
 {
-    for (auto i = 0; i < arguments_.size(); ++i) {
-        if (arguments_[i]->getName() == name) {
-            return arguments_[i]->getValue<T>();
-        }
-    }
+    genepy::ConsoleApplication app{common::kDummyApplicationInformation, argc, argv};
 
-    Q_UNREACHABLE();
+    genepy::CommandLineParser parser = genepy::CommandLineParser::create(app).addArgument(
+        QStringLiteral("argument"), QStringLiteral("A mandatory argument."),
+        QStringLiteral("<argument>"));
+
+    parser.doParsing();
+
+    return 0;
 }
-
-template <typename T>
-T CommandLineParser::getOptionValue(const QString& name) const
-{
-    for (auto i = 0; i < options_.size(); ++i) {
-        if (options_[i]->getNames().contains(name)) {
-            return options_[i]->getValue<T>();
-        }
-    }
-
-    Q_UNREACHABLE();
-}
-
-} // namespace genepy
-
-#endif // GENEPY_COMMANDLINEPARSER_IPP

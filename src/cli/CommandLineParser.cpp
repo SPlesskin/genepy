@@ -97,7 +97,7 @@ bool CommandLineParser::isOptionPresent(const QString& name) const
 
 CommandLineParser::CommandLineParser(const genepy::ConsoleApplication& application)
     : parser_{new QCommandLineParser},
-      helpOption_{parser_->addVersionOption()},
+      helpOption_{parser_->addHelpOption()},
       versionOption_{parser_->addVersionOption()}
 {
     parser_->setApplicationDescription(application.getDescription());

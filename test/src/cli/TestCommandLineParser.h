@@ -17,22 +17,23 @@
  * along with Genepy.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "common.h"
+#ifndef TESTCOMMANDLINEPARSER_H
+#define TESTCOMMANDLINEPARSER_H
 
-#include <QtCore/QDir>
-#include <QtCore/QDirIterator>
+#include <QtTest/QtTest>
 
-namespace common {
+class TestCommandLineParser : public QObject {
 
-const QString kDummyApplicationName = QStringLiteral("Test");
-const QVersionNumber kDummyApplicationVersion{1, 0, 0};
-const QString kDummyApplicationDescription = QStringLiteral("This is a dummy application.");
+    Q_OBJECT
 
-const genepy::ApplicationInformation kDummyApplicationInformation = {
-    kDummyApplicationName, kDummyApplicationVersion, kDummyApplicationDescription};
+private slots:
+    void cleanupTestCase();
+    void testStandardOptions_data();
+    void testStandardOptions();
+    void testMandatoryArgument();
+    void testMissingMandatoryArgument();
+    void testBooleanOption();
+    void testValueOption();
+};
 
-const QString kDummyApplicationPreferenceDirectoryPath = QDir::homePath() + "/." +
-                                                         kDummyApplicationName.toLower() + '/' +
-                                                         kDummyApplicationVersion.toString();
-
-} // namespace common
+#endif // TESTCOMMANDLINEPARSER_H

@@ -23,9 +23,9 @@
  * @date 05/12/2021
  */
 
-#include <QtCore/QCommandLineParser>
-
 #include <genepy/cli/CommandLineParserBuilder.h>
+
+#include <QtCore/QCommandLineParser>
 
 namespace genepy {
 
@@ -40,6 +40,11 @@ CommandLineParserBuilder& CommandLineParserBuilder::addArgument(const QString& n
                                                                 const QString& description,
                                                                 const QString& syntax)
 {
+    // Check that the name of the argument to add isn't used
+    for (const auto& argument : parser_.arguments_) {
+        Q_ASSERT(name != argument->getName());
+    }
+
     parser_.parser_->addPositionalArgument(name, description, syntax);
     parser_.arguments_ << QSharedPointer<CommandLineArgument>::create(name);
 
@@ -50,6 +55,13 @@ CommandLineParserBuilder& CommandLineParserBuilder::addOption(const QStringList&
                                                               const QString& description,
                                                               const QString& valueName)
 {
+    // Check that the names of the option to add aren't used
+    for (const auto& option : parser_.options_) {
+        for (const auto& name : names) {
+            Q_ASSERT(!option->getNames().contains(name));
+        }
+    }
+
     parser_.parser_->addOption(QCommandLineOption{names, description, valueName});
     parser_.options_ << QSharedPointer<CommandLineOption>::create(names);
 

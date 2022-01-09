@@ -17,10 +17,11 @@
  * along with Genepy.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include "TestConsoleApplication.h"
+
 #include <genepy/application/ConsoleApplication.h>
 
 #include "../common.h"
-#include "TestConsoleApplication.h"
 
 void TestConsoleApplication::initTestCase()
 {
@@ -42,17 +43,7 @@ void TestConsoleApplication::testConstructor()
 {
     QVERIFY(!expectedPreferenceDir_.exists());
 
-    const char* argument = "./test";
-
-    int argc = 1;
-    char** argv = new char*[argc + 1];
-    argv[0] = new char[strlen(argument) + 1];
-#ifndef Q_CC_GNU
-    strcpy_s(argv[0], strlen(argument) + 1, argument);
-#else
-    strcpy(argv[0], argument); // GCC doesn't support strcpy_s() and friends.
-#endif
-    argv[1] = nullptr; // argv[argc] shall be a null pointer.
+    EXTRACT_ARGC_ARGV("./test")
 
     const genepy::ConsoleApplication app{common::kDummyApplicationInformation, argc, argv};
 

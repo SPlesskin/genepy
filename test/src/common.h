@@ -24,6 +24,28 @@
 
 #include <genepy/application/ApplicationInformation.h>
 
+#ifdef Q_CC_GNU
+#define EXTRACT_ARGC_ARGV(command)                                                                 \
+    const auto arguments = QString{command}.simplified().split(" ");                               \
+    int argc = arguments.size();                                                                   \
+    char** argv = new char*[argc + 1];                                                             \
+    for (auto i = 0; i < argc; ++i) {                                                              \
+        argv[i] = new char[arguments[i].size() + 1];                                               \
+        strcpy(argv[i], arguments[i].toLocal8Bit().constData());                                   \
+    }                                                                                              \
+    argv[argc] = nullptr; // argv[argc] shall be a null pointer.
+#else                     // GCC doesn't support strcpy_s() and friends.
+#define EXTRACT_ARGC_ARGV(command)                                                                 \
+    const auto arguments = QString{command}.simplified().split(" ");                               \
+    int argc = arguments.size();                                                                   \
+    char** argv = new char*[argc + 1];                                                             \
+    for (auto i = 0; i < argc; ++i) {                                                              \
+        argv[i] = new char[arguments[i].size() + 1];                                               \
+        strcpy_s(argv[i], arguments[i].size() + 1, arguments[i].toLocal8Bit().constData());        \
+    }                                                                                              \
+    argv[argc] = nullptr;
+#endif
+
 namespace common {
 
 extern const QString kDummyApplicationName;

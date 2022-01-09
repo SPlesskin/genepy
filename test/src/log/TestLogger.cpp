@@ -17,10 +17,11 @@
  * along with Genepy.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include "TestLogger.h"
+
 #include <genepy/log/Logger.h>
 
 #include "../common.h"
-#include "TestLogger.h"
 
 namespace {
 
@@ -49,17 +50,7 @@ QString readLine(const QString& filePath, int lineNo)
 
 void TestLogger::initTestCase()
 {
-    const char* argument = "./test";
-
-    int argc = 1;
-    char** argv = new char*[argc + 1];
-    argv[0] = new char[strlen(argument) + 1];
-#ifndef Q_CC_GNU
-    strcpy_s(argv[0], strlen(argument) + 1, argument);
-#else
-    strcpy(argv[0], argument);
-#endif
-    argv[1] = nullptr;
+    EXTRACT_ARGC_ARGV("./test")
 
     application_ = std::make_unique<genepy::ConsoleApplication>(
         common::kDummyApplicationInformation, argc, argv);

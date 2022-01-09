@@ -20,25 +20,37 @@ if(BUILD_TESTING)
     file(GLOB_RECURSE GENEPY_TEST_SOURCES src/Test*.cpp)
     file(GLOB_RECURSE GENEPY_TEST_HEADERS src/Test*.h)
 
+    file(GLOB_RECURSE GENEPY_TEST_HELPER_SOURCES src/*_helper.cpp)
+
     file(GLOB_RECURSE GENEPY_TEST_COMMON_SOURCES src/*.cpp)
     file(GLOB_RECURSE GENEPY_TEST_COMMON_HEADERS src/*.h)
-    list(REMOVE_ITEM GENEPY_TEST_COMMON_SOURCES ${GENEPY_TEST_SOURCES})
+    list(REMOVE_ITEM GENEPY_TEST_COMMON_SOURCES ${GENEPY_TEST_SOURCES}
+                                                ${GENEPY_TEST_HELPER_SOURCES})
     list(REMOVE_ITEM GENEPY_TEST_COMMON_HEADERS ${GENEPY_TEST_HEADERS})
 
     find_package(Qt5 REQUIRED COMPONENTS Test)
 
+    foreach(_file ${GENEPY_TEST_HELPER_SOURCES})
+        get_filename_component(_helper_name ${_file} NAME_WE)
+
+        list(APPEND _helper_sources ${_file} ${GENEPY_TEST_COMMON_SOURCES}
+                                             ${GENEPY_TEST_COMMON_HEADERS})
+
+        add_executable(${_helper_name} ${_helper_sources})
+        target_link_libraries(${_helper_name} PRIVATE ${GENEPY_COMPILER_CONFIGURATION}
+                                                      ${GENEPY_LIBRARY})
+    endforeach()
+
     foreach(_file ${GENEPY_TEST_SOURCES})
-        get_filename_component(_dir ${_file} DIRECTORY)
-        get_filename_component(_name ${_file} NAME_WE)
+        get_filename_component(_test_name ${_file} NAME_WE)
 
-        # List the source files of the current test
-        file(GLOB_RECURSE _sources "${_dir}/${_name}.*")
-        list(APPEND _sources ${GENEPY_TEST_COMMON_SOURCES})
-        list(APPEND _sources ${GENEPY_TEST_COMMON_HEADERS})
+        file(GLOB_RECURSE _test_sources src/${_test_name}.*)
+        list(APPEND _test_sources ${GENEPY_TEST_COMMON_SOURCES} ${GENEPY_TEST_COMMON_HEADERS})
 
-        add_executable(${_name} ${_sources})
-        target_link_libraries(${_name} PRIVATE ${GENEPY_COMPILER_CONFIGURATION} Qt5::Test ${GENEPY_LIBRARY})
+        add_executable(${_test_name} ${_test_sources})
+        target_link_libraries(${_test_name} PRIVATE ${GENEPY_COMPILER_CONFIGURATION} Qt5::Test
+                                                    ${GENEPY_LIBRARY})
 
-        add_test(NAME ${_name} COMMAND ${_name})
+        add_test(NAME ${_test_name} COMMAND ${_test_name})
     endforeach()
 endif()
