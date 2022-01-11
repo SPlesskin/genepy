@@ -28,6 +28,16 @@ namespace {
 
 const auto kProgramInvocation = QStringLiteral("./commandlineparser_test_helper");
 
+#ifdef Q_OS_WIN
+const char kHelpInformation[] = "Usage: .\\commandlineparser_test_helper [options] <argument>\r\n"
+                                "This is a dummy application.\r\n\r\n"
+                                "Options:\r\n"
+                                "  -?, -h, --help  Displays help on commandline options.\r\n"
+                                "  --help-all      Displays help including Qt specific options.\r\n"
+                                "  -v, --version   Displays version information.\r\n\r\n"
+                                "Arguments:\r\n"
+                                "  argument        A mandatory argument.\r\n";
+#else
 const char kHelpInformation[] = "Usage: ./commandlineparser_test_helper [options] <argument>\n"
                                 "This is a dummy application.\n\n"
                                 "Options:\n"
@@ -35,6 +45,7 @@ const char kHelpInformation[] = "Usage: ./commandlineparser_test_helper [options
                                 "  -v, --version  Displays version information.\n\n"
                                 "Arguments:\n"
                                 "  argument       A mandatory argument.\n";
+#endif
 
 } // namespace
 
@@ -53,8 +64,13 @@ void TestCommandLineParser::testStandardOptions_data()
     QTest::addColumn<QString>("expectedOutput");
 
     {
+#ifdef Q_OS_WIN
+        const auto expectedOutput = common::kDummyApplicationName + ' ' +
+                                    common::kDummyApplicationVersion.toString() + "\r\n";
+#else
         const auto expectedOutput = common::kDummyApplicationName + ' ' +
                                     common::kDummyApplicationVersion.toString() + '\n';
+#endif
 
         QTest::newRow("version option") << QStringLiteral("-v") << expectedOutput;
     }
@@ -97,7 +113,7 @@ void TestCommandLineParser::testMandatoryArgument()
 void TestCommandLineParser::testMissingMandatoryArgument()
 {
     QProcess process;
-    process.start(kProgramInvocation);
+    process.start(kProgramInvocation, QStringList{});
 
     QVERIFY(process.waitForFinished(5000));
     QCOMPARE(process.exitStatus(), QProcess::NormalExit);
@@ -105,8 +121,14 @@ void TestCommandLineParser::testMissingMandatoryArgument()
 
     const QString output = process.readAll();
 
+#ifdef Q_OS_WIN
+    const auto expectedOutput =
+        QString{"Incorrect number of arguments passed (expected 1, got 0).\r\n\r\n"} +
+        kHelpInformation;
+#else
     const auto expectedOutput =
         QString{"Incorrect number of arguments passed (expected 1, got 0).\n\n"} + kHelpInformation;
+#endif
 
     QCOMPARE(output, expectedOutput);
 }
