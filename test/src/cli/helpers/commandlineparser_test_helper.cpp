@@ -24,11 +24,10 @@
 
 int main(int argc, char** argv)
 {
-    genepy::ConsoleApplication app{common::kDummyApplicationInformation, argc, argv};
+    const genepy::ConsoleApplication app{common::kApplicationInformation, argc, argv};
 
     genepy::CommandLineParser parser = genepy::CommandLineParser::create(app).addArgument(
-        QStringLiteral("argument"), QStringLiteral("A mandatory argument."),
-        QStringLiteral("<argument>"));
+        QStringLiteral("path"), QStringLiteral("A directory path."), QStringLiteral("<path>"));
 
     parser.doParsing();
 

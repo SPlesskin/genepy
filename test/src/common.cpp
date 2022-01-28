@@ -19,20 +19,39 @@
 
 #include "common.h"
 
-#include <QtCore/QDir>
-#include <QtCore/QDirIterator>
+#include <QtCore/QTextStream>
 
 namespace common {
 
-const QString kDummyApplicationName = QStringLiteral("Test");
-const QVersionNumber kDummyApplicationVersion{1, 0, 0};
-const QString kDummyApplicationDescription = QStringLiteral("This is a dummy application.");
+const QString kApplicationName = QStringLiteral("MyApplication");
+const QVersionNumber kApplicationVersion{1, 0, 0};
+const QString kApplicationDescription = QStringLiteral("This is my application.");
 
-const genepy::ApplicationInformation kDummyApplicationInformation = {
-    kDummyApplicationName, kDummyApplicationVersion, kDummyApplicationDescription};
+const genepy::ApplicationInformation kApplicationInformation = {
+    kApplicationName, kApplicationVersion, kApplicationDescription};
 
-const QString kDummyApplicationPreferenceDirectoryPath = QDir::homePath() + "/." +
-                                                         kDummyApplicationName.toLower() + '/' +
-                                                         kDummyApplicationVersion.toString();
+const QString kApplicationPreferenceDirectoryPath =
+    QDir::homePath() + "/." + kApplicationName.toLower() + '/' + kApplicationVersion.toString();
+
+QDir kLogDirectory = QDir{common::kApplicationPreferenceDirectoryPath + "/log"};
+const QString kLogFileName = common::kApplicationName.toLower() + ".log";
+
+QString readFileLine(const QString& filePath, int lineNo)
+{
+    QFile file(filePath);
+
+    Q_ASSERT(file.open(QIODevice::ReadOnly | QIODevice::Text));
+
+    QTextStream stream{&file};
+    auto i = 1;
+    while (!stream.atEnd()) {
+        const auto line = stream.readLine();
+        if (i++ == lineNo) {
+            return line;
+        }
+    }
+
+    Q_UNREACHABLE();
+}
 
 } // namespace common

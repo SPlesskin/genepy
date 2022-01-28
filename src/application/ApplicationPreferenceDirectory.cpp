@@ -33,12 +33,13 @@ namespace {
 
 QDir createDir(const QString& applicationName, const QVersionNumber& applicationVersion)
 {
-    const auto dir = QDir{QDir::homePath() + "/." + applicationName.toLower() + '/' +
-                          applicationVersion.toString()};
+    const auto result = QDir{QDir::homePath() + "/." + applicationName.toLower() + '/' +
+                             applicationVersion.toString()};
 
-    GENEPY_THROW_EXCEPTION_IF(!dir.mkpath("."), "Can't create directory " << dir.path())
+    GENEPY_THROW_EXCEPTION_IF(!result.mkpath(QStringLiteral(".")),
+                              "Can't create directory " << result.path())
 
-    return dir;
+    return result;
 }
 
 } // namespace

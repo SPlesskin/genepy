@@ -17,89 +17,55 @@
  * along with Genepy.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "TestLogger.h"
+#include "TestClassLogger.h"
 
-#include <genepy/log/Logger.h>
+#include <genepy/application/GuiApplication.h>
 
 #include "../common.h"
 
 namespace {
 
-const auto kLoggerName = QStringLiteral("TestLogger");
-
-QString readLine(const QString& filePath, int lineNo)
-{
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        return QString{};
-    }
-
-    QTextStream stream{&file};
-    auto i = 1;
-    while (!stream.atEnd()) {
-        const auto line = stream.readLine();
-        if (i++ == lineNo) {
-            return line;
-        }
-    }
-
-    return QString{};
-}
+const auto kLoggerName = QStringLiteral("TestClassLogger");
 
 } // namespace
 
-void TestLogger::initTestCase()
+GENEPY_DEFINE_CLASS_LOGGER(TestClassLogger::logger, kLoggerName)
+
+void TestClassLogger::initTestCase() { QVERIFY(common::kLogDirectory.removeRecursively()); }
+
+void TestClassLogger::cleanupTestCase()
 {
-    EXTRACT_ARGC_ARGV("./test")
-
-    application_ = std::make_unique<genepy::ConsoleApplication>(
-        common::kDummyApplicationInformation, argc, argv);
-
-    expectedLogDir_.setPath(application_->getPreferenceDirectory().path() + "/log");
-    expectedLogFileName_ = common::kDummyApplicationName.toLower() + ".log";
-}
-
-void TestLogger::cleanupTestCase()
-{
-    if (application_->getPreferenceDirectory().exists()) {
-        if (!application_->getPreferenceDirectory().removeRecursively()) {
-            qWarning() << "Can't delete directory" << application_->getPreferenceDirectory().path();
-        }
+    if (!common::kLogDirectory.removeRecursively()) {
+        qWarning() << "Can't delete directory" << common::kLogDirectory.path();
     }
 }
 
-void TestLogger::testInitialize()
+void TestClassLogger::testInitialize()
 {
-    QVERIFY(!expectedLogDir_.exists());
+    EXTRACT_ARGC_ARGV("./myapplication")
 
-    // Create a logger and try to log a message
-    genepy::Logger logger{kLoggerName};
-    logger.log(genepy::LogLevel::kInfo, "Message", true);
+    genepy::GuiApplication app{common::kApplicationInformation, argc, argv};
 
-    // Check that the log folder doesn't exist
-    QVERIFY(!expectedLogDir_.exists());
+    genepy::Logger::initialize(&app);
 
-    genepy::Logger::initialize(application_.get());
-
-    // Verify that the log folder is available this time
-    QVERIFY(expectedLogDir_.exists());
-    QVERIFY(expectedLogDir_.exists(expectedLogFileName_));
+    QVERIFY(common::kLogDirectory.exists());
+    QVERIFY(common::kLogDirectory.exists(common::kLogFileName));
+    QVERIFY(QFile{common::kLogDirectory.filePath(common::kLogFileName)}.size() == 0);
 }
 
-void TestLogger::testLog_data()
+void TestClassLogger::testMacros_data()
 {
     QTest::addColumn<int>("lineNo");
     QTest::addColumn<QString>("expectedLinePattern");
 
-    genepy::Logger logger{kLoggerName};
-
     auto lineNo = 1;
-    auto patternPrefix = QStringLiteral("^\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}");
+    const auto patternPrefix =
+        QStringLiteral("^\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}");
 
     {
         const auto message = QStringLiteral("Trace message");
 
-        logger.log(genepy::LogLevel::kTrace, message, true);
+        GENEPY_LOG_TRACE(logger(), message)
 
 #ifdef QT_DEBUG
         QTest::newRow("trace message")
@@ -111,7 +77,7 @@ void TestLogger::testLog_data()
     {
         const auto message = QStringLiteral("Debug message");
 
-        logger.log(genepy::LogLevel::kDebug, message, true);
+        GENEPY_LOG_DEBUG(logger(), message)
 
 #ifdef QT_DEBUG
         QTest::newRow("debug message")
@@ -123,7 +89,7 @@ void TestLogger::testLog_data()
     {
         const auto message = QStringLiteral("Info message");
 
-        logger.log(genepy::LogLevel::kInfo, message, true);
+        GENEPY_LOG_INFO(logger(), message)
 
         QTest::newRow("info message")
             << lineNo++
@@ -133,7 +99,7 @@ void TestLogger::testLog_data()
     {
         const auto message = QStringLiteral("Warn message");
 
-        logger.log(genepy::LogLevel::kWarn, message, true);
+        GENEPY_LOG_WARN(logger(), message)
 
         QTest::newRow("warn message")
             << lineNo++
@@ -143,7 +109,7 @@ void TestLogger::testLog_data()
     {
         const auto message = QStringLiteral("Error message");
 
-        logger.log(genepy::LogLevel::kError, message, true);
+        GENEPY_LOG_ERROR(logger(), message)
 
         QTest::newRow("error message")
             << lineNo++
@@ -153,7 +119,7 @@ void TestLogger::testLog_data()
     {
         const auto message = QStringLiteral("Fatal message");
 
-        logger.log(genepy::LogLevel::kFatal, message, true);
+        GENEPY_LOG_FATAL(logger(), message)
 
         QTest::newRow("fatal message")
             << lineNo++
@@ -161,16 +127,17 @@ void TestLogger::testLog_data()
     }
 }
 
-void TestLogger::testLog()
+void TestClassLogger::testMacros()
 {
     QFETCH(int, lineNo);
     QFETCH(QString, expectedLinePattern);
 
-    const auto line = readLine(expectedLogDir_.path() + '/' + expectedLogFileName_, lineNo);
+    const auto line =
+        common::readFileLine(common::kLogDirectory.filePath(common::kLogFileName), lineNo);
 
     qDebug() << QString{"Line %1: %2"}.arg(lineNo).arg(line);
 
     QVERIFY(QRegExp{expectedLinePattern}.exactMatch(line));
 }
 
-QTEST_APPLESS_MAIN(TestLogger)
+QTEST_APPLESS_MAIN(TestClassLogger)

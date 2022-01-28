@@ -28,6 +28,7 @@
 
 #include <QtCore/QString>
 
+#include <genepy/exception/exception_macros.h>
 #include <genepy/genepy_global.h>
 
 namespace genepy {
@@ -42,14 +43,18 @@ public:
     CommandLineArgumentValue();
 
     /**
-     * @name Getter/Setter
-     * @{
+     * @brief Returns this value as a given type.
+     * @tparam T the returned type
+     * @throw genepy::Exception if this value can't be converted to the above type
      */
     template <typename T>
     T get() const;
 
+    /**
+     * @brief Sets this value.
+     * @param value the value to set
+     */
     void set(const QString& value);
-    /** @} */
 
 private:
     QString value_;

@@ -22,6 +22,8 @@
 
 #include <QtTest/QtTest>
 
+#include <genepy/application/ApplicationPreferenceDirectory.h>
+
 class TestConsoleApplication : public QObject {
 
     Q_OBJECT
@@ -32,7 +34,7 @@ private slots:
     void testConstructor();
 
 private:
-    QDir expectedPreferenceDir_;
+    std::unique_ptr<genepy::ApplicationPreferenceDirectory> expectedPreferenceDir_;
 };
 
 #endif // TESTCONSOLEAPPLICATION_H

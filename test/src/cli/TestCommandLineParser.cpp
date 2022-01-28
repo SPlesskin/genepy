@@ -29,62 +29,53 @@ namespace {
 const auto kProgramInvocation = QStringLiteral("./commandlineparser_test_helper");
 
 #ifdef Q_OS_WIN
-const char kHelpInformation[] = "Usage: .\\commandlineparser_test_helper [options] <argument>\r\n"
-                                "This is a dummy application.\r\n\r\n"
+const char kHelpInformation[] = "Usage: .\\commandlineparser_test_helper [options] <path>\r\n"
+                                "This is my application.\r\n\r\n"
                                 "Options:\r\n"
                                 "  -?, -h, --help  Displays help on commandline options.\r\n"
                                 "  --help-all      Displays help including Qt specific options.\r\n"
                                 "  -v, --version   Displays version information.\r\n\r\n"
                                 "Arguments:\r\n"
-                                "  argument        A mandatory argument.\r\n";
+                                "  path            A directory path.\r\n";
 #else
-const char kHelpInformation[] = "Usage: ./commandlineparser_test_helper [options] <argument>\n"
-                                "This is a dummy application.\n\n"
+const char kHelpInformation[] = "Usage: ./commandlineparser_test_helper [options] <path>\n"
+                                "This is my application.\n\n"
                                 "Options:\n"
                                 "  -h, --help     Displays this help.\n"
                                 "  -v, --version  Displays version information.\n\n"
                                 "Arguments:\n"
-                                "  argument       A mandatory argument.\n";
+                                "  path           A directory path.\n";
 #endif
 
 } // namespace
 
-void TestCommandLineParser::cleanupTestCase()
-{
-    auto dir = QDir{common::kDummyApplicationPreferenceDirectoryPath};
-
-    if (dir.exists()) {
-        dir.removeRecursively();
-    }
-}
-
 void TestCommandLineParser::testStandardOptions_data()
 {
-    QTest::addColumn<QString>("option");
+    QTest::addColumn<QStringList>("arguments");
     QTest::addColumn<QString>("expectedOutput");
 
     {
 #ifdef Q_OS_WIN
-        const auto expectedOutput = common::kDummyApplicationName + ' ' +
-                                    common::kDummyApplicationVersion.toString() + "\r\n";
+        const auto expectedOutput =
+            common::kApplicationName + ' ' + common::kApplicationVersion.toString() + "\r\n";
 #else
-        const auto expectedOutput = common::kDummyApplicationName + ' ' +
-                                    common::kDummyApplicationVersion.toString() + '\n';
+        const auto expectedOutput =
+            common::kApplicationName + ' ' + common::kApplicationVersion.toString() + '\n';
 #endif
 
-        QTest::newRow("version option") << QStringLiteral("-v") << expectedOutput;
+        QTest::newRow("version option") << QStringList{QStringLiteral("-v")} << expectedOutput;
     }
 
-    QTest::newRow("help option") << QStringLiteral("-h") << kHelpInformation;
+    QTest::newRow("help option") << QStringList{QStringLiteral("-h")} << kHelpInformation;
 }
 
 void TestCommandLineParser::testStandardOptions()
 {
-    QFETCH(QString, option);
+    QFETCH(QStringList, arguments);
     QFETCH(QString, expectedOutput);
 
     QProcess process;
-    process.start(kProgramInvocation, QStringList{} << option);
+    process.start(kProgramInvocation, arguments);
 
     QVERIFY(process.waitForFinished(5000));
     QCOMPARE(process.exitStatus(), QProcess::NormalExit);
@@ -97,105 +88,115 @@ void TestCommandLineParser::testStandardOptions()
 
 void TestCommandLineParser::testMandatoryArgument()
 {
-    EXTRACT_ARGC_ARGV("./test .")
+    {
+        EXTRACT_ARGC_ARGV("./myapplication .")
 
-    const genepy::ConsoleApplication app{common::kDummyApplicationInformation, argc, argv};
+        const genepy::ConsoleApplication app{common::kApplicationInformation, argc, argv};
 
-    genepy::CommandLineParser parser = genepy::CommandLineParser::create(app).addArgument(
-        QStringLiteral("path"), QStringLiteral("A directory path."), QStringLiteral("<path>"));
+        genepy::CommandLineParser parser = genepy::CommandLineParser::create(app).addArgument(
+            QStringLiteral("path"), QStringLiteral("A directory path."), QStringLiteral("<path>"));
 
-    parser.doParsing();
+        parser.doParsing();
 
-    QCOMPARE(parser.getArgumentValue<QString>(QStringLiteral("path")), QStringLiteral("."));
-    QCOMPARE(parser.getArgumentValue<QDir>(QStringLiteral("path")), QDir{QStringLiteral(".")});
-}
+        QCOMPARE(parser.getArgumentValue<QString>(QStringLiteral("path")), QStringLiteral("."));
+        QCOMPARE(parser.getArgumentValue<QDir>(QStringLiteral("path")), QDir{QStringLiteral(".")});
+    }
 
-void TestCommandLineParser::testMissingMandatoryArgument()
-{
-    QProcess process;
-    process.start(kProgramInvocation, QStringList{});
+    {
+        QProcess process;
+        process.start(kProgramInvocation, QStringList{});
 
-    QVERIFY(process.waitForFinished(5000));
-    QCOMPARE(process.exitStatus(), QProcess::NormalExit);
-    QCOMPARE(process.exitCode(), 1);
+        QVERIFY(process.waitForFinished(5000));
+        QCOMPARE(process.exitStatus(), QProcess::NormalExit);
+        QCOMPARE(process.exitCode(), 1);
 
-    const QString output = process.readAll();
+        const QString output = process.readAll();
 
 #ifdef Q_OS_WIN
-    const auto expectedOutput =
-        QString{"Incorrect number of arguments passed (expected 1, got 0).\r\n\r\n"} +
-        kHelpInformation;
+        const auto expectedOutput =
+            QString{"Incorrect number of arguments passed (expected 1, got 0).\r\n\r\n"} +
+            kHelpInformation;
 #else
-    const auto expectedOutput =
-        QString{"Incorrect number of arguments passed (expected 1, got 0).\n\n"} + kHelpInformation;
+        const auto expectedOutput =
+            QString{"Incorrect number of arguments passed (expected 1, got 0).\n\n"} +
+            kHelpInformation;
 #endif
 
-    QCOMPARE(output, expectedOutput);
+        QCOMPARE(output, expectedOutput);
+    }
 }
 
 void TestCommandLineParser::testBooleanOption()
 {
+    const auto names = QStringList{QStringLiteral("q"), QStringLiteral("quiet")};
+    const auto description = QStringLiteral("Do not output any message.");
+
     {
-        EXTRACT_ARGC_ARGV("./test")
+        EXTRACT_ARGC_ARGV("./myapplication")
 
-        const genepy::ConsoleApplication app{common::kDummyApplicationInformation, argc, argv};
+        const genepy::ConsoleApplication app{common::kApplicationInformation, argc, argv};
 
-        genepy::CommandLineParser parser = genepy::CommandLineParser::create(app).addOption(
-            QStringList{} << QStringLiteral("b") << QStringLiteral("boolean"),
-            QStringLiteral("A boolean option."));
+        genepy::CommandLineParser parser =
+            genepy::CommandLineParser::create(app).addOption(names, description);
 
         parser.doParsing();
 
-        QVERIFY(!parser.isOptionPresent(QStringLiteral("b")));
-        QVERIFY(!parser.isOptionPresent(QStringLiteral("boolean")));
+        QVERIFY(!parser.isOptionPresent(QStringLiteral("q")));
+        QVERIFY(!parser.isOptionPresent(QStringLiteral("quiet")));
     }
 
     {
-        EXTRACT_ARGC_ARGV("./test -b")
+        EXTRACT_ARGC_ARGV("./myapplication -q")
 
-        const genepy::ConsoleApplication app{common::kDummyApplicationInformation, argc, argv};
+        const genepy::ConsoleApplication app{common::kApplicationInformation, argc, argv};
 
-        genepy::CommandLineParser parser = genepy::CommandLineParser::create(app).addOption(
-            QStringList{} << QStringLiteral("b") << QStringLiteral("boolean"),
-            QStringLiteral("A boolean option."));
+        genepy::CommandLineParser parser =
+            genepy::CommandLineParser::create(app).addOption(names, description);
 
         parser.doParsing();
 
-        QVERIFY(parser.isOptionPresent(QStringLiteral("b")));
-        QVERIFY(parser.isOptionPresent(QStringLiteral("boolean")));
+        QVERIFY(parser.isOptionPresent(QStringLiteral("q")));
+        QVERIFY(parser.isOptionPresent(QStringLiteral("quiet")));
     }
 }
 
 void TestCommandLineParser::testValueOption()
 {
+    const auto names = QStringList{QStringLiteral("l"), QStringLiteral("log-level")};
+    const auto description = QStringLiteral("Set the log output verbosity.");
+    const auto valueName = QStringLiteral("level");
+
     {
-        EXTRACT_ARGC_ARGV("./test")
+        EXTRACT_ARGC_ARGV("./myapplication")
 
-        const genepy::ConsoleApplication app{common::kDummyApplicationInformation, argc, argv};
+        const genepy::ConsoleApplication app{common::kApplicationInformation, argc, argv};
 
-        genepy::CommandLineParser parser = genepy::CommandLineParser::create(app).addOption(
-            QStringList{} << QStringLiteral("o") << QStringLiteral("option"),
-            QStringLiteral("A value option."), QStringLiteral("value"));
+        genepy::CommandLineParser parser =
+            genepy::CommandLineParser::create(app).addOption(names, description, valueName);
 
         parser.doParsing();
 
-        QVERIFY(!parser.isOptionPresent(QStringLiteral("o")));
-        QVERIFY(parser.getOptionValue<QString>(QStringLiteral("o")).isEmpty());
+        QVERIFY(!parser.isOptionPresent(QStringLiteral("l")));
+        QVERIFY(!parser.isOptionPresent(QStringLiteral("log-level")));
+        QVERIFY(parser.getOptionValue<QString>(QStringLiteral("l")).isEmpty());
+        QVERIFY(parser.getOptionValue<QString>(QStringLiteral("log-level")).isEmpty());
     }
 
     {
-        EXTRACT_ARGC_ARGV("./test -o=foo")
+        EXTRACT_ARGC_ARGV("./myapplication -l debug")
 
-        const genepy::ConsoleApplication app{common::kDummyApplicationInformation, argc, argv};
+        const genepy::ConsoleApplication app{common::kApplicationInformation, argc, argv};
 
-        genepy::CommandLineParser parser = genepy::CommandLineParser::create(app).addOption(
-            QStringList{} << QStringLiteral("o") << QStringLiteral("option"),
-            QStringLiteral("A value option."), QStringLiteral("value"));
+        genepy::CommandLineParser parser =
+            genepy::CommandLineParser::create(app).addOption(names, description, valueName);
 
         parser.doParsing();
 
-        QVERIFY(parser.isOptionPresent(QStringLiteral("o")));
-        QCOMPARE(parser.getOptionValue<QString>(QStringLiteral("o")), QStringLiteral("foo"));
+        QVERIFY(parser.isOptionPresent(QStringLiteral("l")));
+        QVERIFY(parser.isOptionPresent(QStringLiteral("log-level")));
+        QCOMPARE(parser.getOptionValue<QString>(QStringLiteral("l")), QStringLiteral("debug"));
+        QCOMPARE(parser.getOptionValue<QString>(QStringLiteral("log-level")),
+                 QStringLiteral("debug"));
     }
 }
 

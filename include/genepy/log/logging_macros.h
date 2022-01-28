@@ -30,6 +30,16 @@
 
 #include <genepy/log/Logger.h>
 
+namespace genepy {
+
+#ifdef GENEPY_TEST_MODULE
+const auto kFlush = true;
+#else
+const auto kFlush = false;
+#endif
+
+} // namespace genepy
+
 /**
  * @ingroup log
  * @{
@@ -61,6 +71,7 @@
     const genepy::Logger& varname()                                                                \
     {                                                                                              \
         GENEPY_DEFINE_LOCAL_LOGGER(logger, name)                                                   \
+                                                                                                   \
         return logger;                                                                             \
     }
 
@@ -74,7 +85,7 @@
         auto str = QString{};                                                                      \
         QTextStream stream{&str};                                                                  \
         stream << message;                                                                         \
-        varname.log(genepy::LogLevel::kTrace, str);                                                \
+        varname.log(genepy::LogLevel::kTrace, str, genepy::kFlush);                                \
     }
 
 /**
@@ -87,7 +98,7 @@
         auto str = QString{};                                                                      \
         QTextStream stream{&str};                                                                  \
         stream << message;                                                                         \
-        varname.log(genepy::LogLevel::kDebug, str);                                                \
+        varname.log(genepy::LogLevel::kDebug, str, genepy::kFlush);                                \
     }
 
 /**
@@ -100,7 +111,7 @@
         auto str = QString{};                                                                      \
         QTextStream stream{&str};                                                                  \
         stream << message;                                                                         \
-        varname.log(genepy::LogLevel::kInfo, str);                                                 \
+        varname.log(genepy::LogLevel::kInfo, str, genepy::kFlush);                                 \
     }
 
 /**
@@ -113,7 +124,7 @@
         auto str = QString{};                                                                      \
         QTextStream stream{&str};                                                                  \
         stream << message;                                                                         \
-        varname.log(genepy::LogLevel::kWarn, str);                                                 \
+        varname.log(genepy::LogLevel::kWarn, str, genepy::kFlush);                                 \
     }
 
 /**
@@ -126,7 +137,7 @@
         auto str = QString{};                                                                      \
         QTextStream stream{&str};                                                                  \
         stream << message;                                                                         \
-        varname.log(genepy::LogLevel::kError, str);                                                \
+        varname.log(genepy::LogLevel::kError, str, genepy::kFlush);                                \
     }
 
 /**
@@ -139,7 +150,7 @@
         auto str = QString{};                                                                      \
         QTextStream stream{&str};                                                                  \
         stream << message;                                                                         \
-        varname.log(genepy::LogLevel::kFatal, str);                                                \
+        varname.log(genepy::LogLevel::kFatal, str, genepy::kFlush);                                \
     }
 
 /** @} */

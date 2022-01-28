@@ -17,30 +17,17 @@
  * along with Genepy.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef TESTLOGGER_H
-#define TESTLOGGER_H
-
-#include <memory>
+#ifndef TESTPROGRESSBAR_H
+#define TESTPROGRESSBAR_H
 
 #include <QtTest/QtTest>
 
-#include <genepy/application/ConsoleApplication.h>
-
-class TestLogger : public QObject {
+class TestProgressBar : public QObject {
 
     Q_OBJECT
 
 private slots:
-    void initTestCase();
-    void cleanupTestCase();
-    void testInitialize();
-    void testLog_data();
-    void testLog();
-
-private:
-    std::unique_ptr<genepy::ConsoleApplication> application_;
-    QDir expectedLogDir_;
-    QString expectedLogFileName_;
+    void testUpdate();
 };
 
-#endif // TESTLOGGER_H
+#endif // TESTPROGRESSBAR_H

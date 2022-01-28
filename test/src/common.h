@@ -20,7 +20,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include <QtCore/QVersionNumber>
+#include <QtCore/QDir>
 
 #include <genepy/application/ApplicationInformation.h>
 
@@ -48,13 +48,15 @@
 
 namespace common {
 
-extern const QString kDummyApplicationName;
-extern const QVersionNumber kDummyApplicationVersion;
-extern const QString kDummyApplicationDescription;
+extern const QString kApplicationName;
+extern const QVersionNumber kApplicationVersion;
+extern const QString kApplicationDescription;
+extern const genepy::ApplicationInformation kApplicationInformation;
+extern const QString kApplicationPreferenceDirectoryPath;
+extern QDir kLogDirectory;
+extern const QString kLogFileName;
 
-extern const genepy::ApplicationInformation kDummyApplicationInformation;
-
-extern const QString kDummyApplicationPreferenceDirectoryPath;
+extern QString readFileLine(const QString& filePath, int lineNo);
 
 } // namespace common
 

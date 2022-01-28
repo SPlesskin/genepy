@@ -17,35 +17,21 @@
  * along with Genepy.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * @file CommandLineArgumentValue.ipp
- * @author Erwan
- * @date 16/12/2021
- */
+#ifndef TESTLOCALLOGGER_H
+#define TESTLOCALLOGGER_H
 
-#ifndef GENEPY_COMMANDLINEARGUMENTVALUE_IPP
-#define GENEPY_COMMANDLINEARGUMENTVALUE_IPP
+#include <QtTest/QtTest>
 
-namespace genepy {
+class TestLocalLogger : public QObject {
 
-template <typename T>
-T CommandLineArgumentValue::get() const
-{
-    return T{value_};
-}
+    Q_OBJECT
 
-template <>
-inline int CommandLineArgumentValue::get() const
-{
-    bool ok;
-    const auto result = value_.toInt(&ok);
+private slots:
+    void initTestCase();
+    void cleanupTestCase();
+    void testInitialize();
+    void testMacros_data();
+    void testMacros();
+};
 
-    GENEPY_THROW_EXCEPTION_IF(!ok,
-                              "Failed to convert the string \"" << value_ << "\" to an integer")
-
-    return result;
-}
-
-} // namespace genepy
-
-#endif // GENEPY_COMMANDLINEARGUMENTVALUE_IPP
+#endif // TESTLOCALLOGGER_H

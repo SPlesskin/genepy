@@ -25,29 +25,27 @@
 
 void TestApplicationPreferenceDirectory::initTestCase()
 {
-    expectedDir_ = QDir{common::kDummyApplicationPreferenceDirectoryPath};
+    expectedDir_ = QDir{common::kApplicationPreferenceDirectoryPath};
 
-    if (expectedDir_.exists()) {
-        expectedDir_.removeRecursively();
-    }
+    QVERIFY(expectedDir_.removeRecursively());
 }
 
-void TestApplicationPreferenceDirectory::cleanupTestCase()
-{
-    if (expectedDir_.exists()) {
-        expectedDir_.removeRecursively();
-    }
-}
+void TestApplicationPreferenceDirectory::cleanupTestCase() { expectedDir_.removeRecursively(); }
 
 void TestApplicationPreferenceDirectory::testConstructor()
 {
-    QVERIFY(!expectedDir_.exists());
+    try {
+        const auto dir = genepy::ApplicationPreferenceDirectory{common::kApplicationName,
+                                                                common::kApplicationVersion};
 
-    auto dir = genepy::ApplicationPreferenceDirectory{common::kDummyApplicationName,
-                                                      common::kDummyApplicationVersion};
+        QVERIFY(dir.exists());
+        QCOMPARE(dir.path(), expectedDir_.path());
+    }
+    catch (const std::exception& e) {
+        QVERIFY(false);
 
-    QVERIFY(dir.exists());
-    QCOMPARE(dir.path(), expectedDir_.path());
+        Q_UNUSED(e)
+    }
 }
 
 QTEST_APPLESS_MAIN(TestApplicationPreferenceDirectory)

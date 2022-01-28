@@ -30,11 +30,12 @@ if(BUILD_TESTING)
 
     find_package(Qt5 REQUIRED COMPONENTS Test)
 
+    add_definitions(-D GENEPY_TEST_MODULE)
+
     foreach(_file ${GENEPY_TEST_HELPER_SOURCES})
         get_filename_component(_helper_name ${_file} NAME_WE)
 
-        list(APPEND _helper_sources ${_file} ${GENEPY_TEST_COMMON_SOURCES}
-                                             ${GENEPY_TEST_COMMON_HEADERS})
+        set(_helper_sources ${_file} ${GENEPY_TEST_COMMON_SOURCES} ${GENEPY_TEST_COMMON_HEADERS})
 
         add_executable(${_helper_name} ${_helper_sources})
         target_link_libraries(${_helper_name} PRIVATE ${GENEPY_COMPILER_CONFIGURATION}

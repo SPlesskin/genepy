@@ -17,35 +17,18 @@
  * along with Genepy.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * @file CommandLineArgumentValue.ipp
- * @author Erwan
- * @date 16/12/2021
- */
+#include <genepy/cli/ProgressBar.h>
 
-#ifndef GENEPY_COMMANDLINEARGUMENTVALUE_IPP
-#define GENEPY_COMMANDLINEARGUMENTVALUE_IPP
-
-namespace genepy {
-
-template <typename T>
-T CommandLineArgumentValue::get() const
+int main(int argc, char** argv)
 {
-    return T{value_};
+    Q_UNUSED(argc)
+    Q_UNUSED(argv)
+
+    genepy::ProgressBar progressBar{5};
+
+    for (auto i = 0; i < 10; ++i) {
+        progressBar.update();
+    }
+
+    return 0;
 }
-
-template <>
-inline int CommandLineArgumentValue::get() const
-{
-    bool ok;
-    const auto result = value_.toInt(&ok);
-
-    GENEPY_THROW_EXCEPTION_IF(!ok,
-                              "Failed to convert the string \"" << value_ << "\" to an integer")
-
-    return result;
-}
-
-} // namespace genepy
-
-#endif // GENEPY_COMMANDLINEARGUMENTVALUE_IPP

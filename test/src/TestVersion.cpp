@@ -23,8 +23,11 @@
 
 void TestVersion::testVersion()
 {
-    QVERIFY(!genepy::kVersion.isNull());
-    QCOMPARE(genepy::kVersion.segmentCount(), 3);
+    const auto segments = genepy::kVersion.segments();
+
+    QCOMPARE(segments.size(), 3);
+    QVERIFY(std::all_of(std::cbegin(segments), std::cend(segments), [](int n) { return n >= 0; }) &&
+            std::any_of(std::cbegin(segments), std::cend(segments), [](int n) { return n >= 1; }));
 }
 
 void TestVersion::testVersionBuildDatetime() { QVERIFY(genepy::kVersionBuildDatetime.isValid()); }

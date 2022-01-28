@@ -25,37 +25,23 @@
 
 void TestConsoleApplication::initTestCase()
 {
-    expectedPreferenceDir_ = QDir{common::kDummyApplicationPreferenceDirectoryPath};
-
-    if (expectedPreferenceDir_.exists()) {
-        expectedPreferenceDir_.removeRecursively();
-    }
+    expectedPreferenceDir_ = std::make_unique<genepy::ApplicationPreferenceDirectory>(
+        common::kApplicationName, common::kApplicationVersion);
 }
 
-void TestConsoleApplication::cleanupTestCase()
-{
-    if (expectedPreferenceDir_.exists()) {
-        expectedPreferenceDir_.removeRecursively();
-    }
-}
+void TestConsoleApplication::cleanupTestCase() { expectedPreferenceDir_->removeRecursively(); }
 
 void TestConsoleApplication::testConstructor()
 {
-    QVERIFY(!expectedPreferenceDir_.exists());
+    EXTRACT_ARGC_ARGV("./myapplication")
 
-    EXTRACT_ARGC_ARGV("./test")
+    const genepy::ConsoleApplication app{common::kApplicationInformation, argc, argv};
 
-    const genepy::ConsoleApplication app{common::kDummyApplicationInformation, argc, argv};
-
-    QCOMPARE(genepy::ConsoleApplication::applicationName(), common::kDummyApplicationName);
+    QCOMPARE(genepy::ConsoleApplication::applicationName(), common::kApplicationName);
     QCOMPARE(genepy::ConsoleApplication::applicationVersion(),
-             common::kDummyApplicationVersion.toString());
-    QCOMPARE(app.getDescription(), common::kDummyApplicationDescription);
-
-    const auto preferenceDir = app.getPreferenceDirectory();
-
-    QVERIFY(preferenceDir.exists());
-    QCOMPARE(preferenceDir.path(), expectedPreferenceDir_.path());
+             common::kApplicationVersion.toString());
+    QCOMPARE(app.getDescription(), common::kApplicationDescription);
+    QCOMPARE(app.getPreferenceDirectory(), *expectedPreferenceDir_);
 }
 
 QTEST_APPLESS_MAIN(TestConsoleApplication)

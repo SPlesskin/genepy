@@ -50,7 +50,7 @@ namespace genepy {
  * QTimer timer;
  * QObject::connect(&timer, &QTimer::timeout, &progressBar, &genepy::ProgressBar::update);
  *
- * timer.start(1000); // Timeout interval of 1 second (or 1000 milliseconds)
+ * timer.setInterval(1000); // Timeout interval of 1 second (or 1000 milliseconds)
  * ~~~
  *
  * @ingroup cli
