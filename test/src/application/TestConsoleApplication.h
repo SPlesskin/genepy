@@ -20,6 +20,8 @@
 #ifndef TESTCONSOLEAPPLICATION_H
 #define TESTCONSOLEAPPLICATION_H
 
+#include <memory>
+
 #include <QtTest/QtTest>
 
 #include <genepy/application/ApplicationPreferenceDirectory.h>

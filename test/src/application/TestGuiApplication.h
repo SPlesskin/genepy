@@ -20,6 +20,8 @@
 #ifndef TESTGUIAPPLICATION_H
 #define TESTGUIAPPLICATION_H
 
+#include <memory>
+
 #include <QtTest/QtTest>
 
 #include <genepy/application/ApplicationPreferenceDirectory.h>
