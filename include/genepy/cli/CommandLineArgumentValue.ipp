@@ -40,8 +40,8 @@ inline int CommandLineArgumentValue::get() const
     bool ok;
     const auto result = value_.toInt(&ok);
 
-    GENEPY_THROW_EXCEPTION_IF(!ok,
-                              "Failed to convert the string \"" << value_ << "\" to an integer")
+    GENEPY_THROW_EXCEPTION_IF(!ok, "Failed to convert the string \"" << value_
+                                                                     << "\" to an integer")
 
     return result;
 }

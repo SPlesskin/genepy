@@ -36,8 +36,8 @@ QDir createDir(const QString& applicationName, const QVersionNumber& application
     const auto result = QDir{QDir::homePath() + "/." + applicationName.toLower() + '/' +
                              applicationVersion.toString()};
 
-    GENEPY_THROW_EXCEPTION_IF(!result.mkpath(QStringLiteral(".")),
-                              "Can't create directory " << result.path())
+    GENEPY_THROW_EXCEPTION_IF(!result.mkpath(QStringLiteral(".")), "Can't create directory "
+                                                                       << result.path())
 
     return result;
 }
