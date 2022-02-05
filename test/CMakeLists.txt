@@ -30,7 +30,8 @@ if(BUILD_TESTING)
 
     find_package(Qt5 REQUIRED COMPONENTS Test)
 
-    add_definitions(-D GENEPY_TEST_MODULE)
+    add_definitions(-DGENEPY_TEST_MODULE
+                    -DGENEPY_TEST_WORKING_DIR="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 
     foreach(_file ${GENEPY_TEST_HELPER_SOURCES})
         get_filename_component(_helper_name ${_file} NAME_WE)

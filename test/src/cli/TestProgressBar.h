@@ -27,6 +27,7 @@ class TestProgressBar : public QObject {
     Q_OBJECT
 
 private slots:
+    void initTestCase();
     void testUpdate();
 };
 

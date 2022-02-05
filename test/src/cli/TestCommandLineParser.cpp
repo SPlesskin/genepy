@@ -49,6 +49,11 @@ const char kHelpInformation[] = "Usage: ./commandlineparser_test_helper [options
 
 } // namespace
 
+void TestCommandLineParser::initTestCase()
+{
+    QVERIFY(QDir::setCurrent(QStringLiteral(GENEPY_TEST_WORKING_DIR)));
+}
+
 void TestCommandLineParser::testStandardOptions_data()
 {
     QTest::addColumn<QStringList>("arguments");
