@@ -13,11 +13,11 @@ required to build this project.
 ```bash
 cd external
 mkdir build && cd build
-cmake -D GENEPY_EXTERNAL_BUILD_TYPE=Release ..
+cmake -G"Unix Makefiles" -DGENEPY_EXTERNAL_BUILD_TYPE=Release ..
 make
 cd ../..
 mkdir build && cd build
-cmake -D CMAKE_BUILD_TYPE=Release ..
+cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ..
 sudo make install
 ```
 
@@ -29,7 +29,7 @@ can be compiled as follows:
 ```bash
 cd example
 mkdir build && cd build
-cmake ..
+cmake -G"Unix Makefiles" ..
 make
 ```
 
