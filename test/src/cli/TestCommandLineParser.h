@@ -27,7 +27,6 @@ class TestCommandLineParser : public QObject {
     Q_OBJECT
 
 private slots:
-    void initTestCase();
     void testStandardOptions_data();
     void testStandardOptions();
     void testMandatoryArgument();

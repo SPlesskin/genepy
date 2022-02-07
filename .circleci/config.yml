@@ -55,9 +55,12 @@ jobs:
                   make
             - run:
                 name: Execute tests
+                # Some tests are excluded since they require a display to work. In addition, the
+                # "-platform <name>" command-line option (for test executables) doesn't seem to
+                # be available with the current installation of Qt.
                 command: |
                   cd build
-                  ctest --no-compress-output -T Test || true
+                  ctest -E "Test(GuiApplication|ClassLogger)" --no-compress-output -T Test || true
             - run:
                 name: Generate JUnit XML report
                 command: |

@@ -28,11 +28,8 @@ if(BUILD_TESTING)
                                                 ${GENEPY_TEST_HELPER_SOURCES})
     list(REMOVE_ITEM GENEPY_TEST_COMMON_HEADERS ${GENEPY_TEST_HEADERS})
 
-    find_package(Qt5 REQUIRED COMPONENTS Test)
-
-    add_definitions(-DGENEPY_TEST_MODULE
-                    -DGENEPY_TEST_WORKING_DIR="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
-
+    # Compile the test helpers
+    # ========================
     foreach(_file ${GENEPY_TEST_HELPER_SOURCES})
         get_filename_component(_helper_name ${_file} NAME_WE)
 
@@ -42,6 +39,12 @@ if(BUILD_TESTING)
         target_link_libraries(${_helper_name} PRIVATE ${GENEPY_COMPILER_CONFIGURATION}
                                                       ${GENEPY_LIBRARY})
     endforeach()
+
+    # Compile the tests
+    # =================
+    find_package(Qt5 REQUIRED COMPONENTS Test)
+
+    add_definitions(-DGENEPY_TEST_MODULE)
 
     foreach(_file ${GENEPY_TEST_SOURCES})
         get_filename_component(_test_name ${_file} NAME_WE)
@@ -53,6 +56,7 @@ if(BUILD_TESTING)
         target_link_libraries(${_test_name} PRIVATE ${GENEPY_COMPILER_CONFIGURATION} Qt5::Test
                                                     ${GENEPY_LIBRARY})
 
-        add_test(NAME ${_test_name} COMMAND ${_test_name})
+        add_test(NAME ${_test_name} COMMAND ${_test_name}
+                 WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
     endforeach()
 endif()

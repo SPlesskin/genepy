@@ -19,11 +19,6 @@
 
 #include "TestProgressBar.h"
 
-void TestProgressBar::initTestCase()
-{
-    QVERIFY(QDir::setCurrent(QStringLiteral(GENEPY_TEST_WORKING_DIR)));
-}
-
 void TestProgressBar::testUpdate()
 {
     QProcess process;
