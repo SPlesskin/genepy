@@ -20,6 +20,7 @@
 #include "common.h"
 
 #include <QtCore/QTextStream>
+#include <QtDebug>
 
 namespace common {
 
@@ -38,9 +39,13 @@ const QString kLogFileName = common::kApplicationName.toLower() + ".log";
 
 QString readFileLine(const QString& filePath, int lineNo)
 {
-    QFile file(filePath);
+    QFile file{filePath};
 
-    Q_ASSERT(file.open(QIODevice::ReadOnly | QIODevice::Text));
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qCritical() << "Can't open file" << file.fileName();
+
+        return QString{};
+    }
 
     QTextStream stream{&file};
     auto i = 1;
