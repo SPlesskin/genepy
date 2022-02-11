@@ -22,7 +22,7 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.15)
     cmake_policy(SET CMP0092 NEW) # Silence MSVC warning D9025
 endif()
 
-project(Genepy VERSION 0.7.0 LANGUAGES CXX)
+project(Genepy VERSION 1.0.0 LANGUAGES CXX)
 
 # Set a default build type if none was specified
 include(cmake/GenepyBuildType.cmake)
